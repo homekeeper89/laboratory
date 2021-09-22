@@ -1,0 +1,14 @@
+version: '3.0'
+
+services:
+  run_with_me:
+    container_name: run_with_me
+    image: run_with_me:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/app
+    command: 'python main.py'
+    ports:
+      - '8000:5000'
