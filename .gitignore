@@ -130,3 +130,6 @@ dmypy.json
 
 # pytest-watch
 .testmondata
+
+# vscode settings
+.vscode/
