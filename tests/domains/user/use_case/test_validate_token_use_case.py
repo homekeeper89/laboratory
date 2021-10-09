@@ -11,7 +11,8 @@ def test_get_social_helpert_should_return_expected(category):
     assert isinstance(helper, KakaoLoginHelper)
 
 
-def test_use_case_should_return_data(app, get_token_data):
+def test_use_case_should_return_data(app, requests_mock, get_token_data):
+    requests_mock.get("https://kapi.kakao.com/v2/user/me", text="data", status_code=200)
     data = get_token_data()
     uc = ValidateAccessTokenUseCase()
     res = uc.execute(data["category"], data["access_token"])

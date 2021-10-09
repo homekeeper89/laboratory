@@ -2,6 +2,8 @@ from app.domains import main_api
 from flasgger import swag_from
 from flask import request
 
+from app.domains.user.use_case.v1.validate_access_token_use_case import ValidateAccessTokenUseCase
+
 
 @main_api.route("/user/v1/ping")
 @swag_from("temp_ping.yml")
@@ -10,6 +12,10 @@ def temp_ping():
 
 
 @main_api.route("/user/v1/token", methods=["POST"])
+@swag_from("create_token.yml")
 def create_token():
     data = request.json
-    return "SUCCESS"
+    category = data.get("category")
+    token = data.get("access_token")
+
+    return ValidateAccessTokenUseCase().execute(category, token)

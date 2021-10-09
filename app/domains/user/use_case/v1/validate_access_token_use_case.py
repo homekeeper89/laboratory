@@ -1,4 +1,5 @@
 from app.utils.social_login import BaseSocialLoginHelper
+from app.core.exceptions import FailOuterApiResponseException
 
 
 class ValidateAccessTokenUseCase:
@@ -6,9 +7,12 @@ class ValidateAccessTokenUseCase:
         pass
 
     def execute(self, category: str, token: str):
-
         social_helper = self.__get_helper(category, token)
-        valid_token = social_helper.validate_token()
+        try:
+            valid_token = social_helper.validate_token()
+        except FailOuterApiResponseException as fe:
+            print(f"{fe.msg}")
+            return "Fail"
 
         return "SUCCESS"
 

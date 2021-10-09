@@ -16,7 +16,7 @@ def get_swagger_config() -> dict:
             "version": "0.0.1",
         },
         "host": "TBD",  # overrides localhost:500
-        "basePath": "/api",  # base bash for blueprint registration
+        "basePath": "",  # base bash for blueprint registration
         "schemes": ["http", "https"],
         "operationId": "getmyData",
     }
