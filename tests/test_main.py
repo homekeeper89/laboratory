@@ -13,6 +13,6 @@ def test_app_with_config_should_return_env(env):
     assert app.config["ENV"] == env
 
 
-def test_ping_should_return_success(test_client):
-    res = test_client.get("/ping")
+def test_health_check_should_return_success(test_client):
+    res = test_client.get("/")
     assert res.status_code == 200

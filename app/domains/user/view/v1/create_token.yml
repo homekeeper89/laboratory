@@ -2,22 +2,38 @@
 ---
 tags:
   - name: "[dev] User Create Token"
-parameters:
-  - in: body
-    name: category
-    type: string
-    enum: [kakao, apple]
-    required: true
-    description: social login provider 종류
-  - in: body
-    name: access_token
-    type: string
-    required: true
-    description: social login provider 가 제공한 token
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          category:
+            type: string
+            enum: [kakao, apple]
+            description: 소셜 로그인 종류
+          access_token:
+            type: string
+            description: 소셜 로그인 프로바이더로부터 획득한 token
 responses:
   200:
+    description: 성공
+    content:
+      application/json:
+        schema:
+          properties:
+            data:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  description: 인증성공 후 생성한 토큰
+            meta:
+              type: object
+              properties:
+                category:
+                  type: string
+                  description: 소셜 로그인 종류
+  400:
     description: TBD
-    schema:
-      $ref: "#/definitions/Palette"
-    examples:
-      rgb: ["red", "green", "blue"]
