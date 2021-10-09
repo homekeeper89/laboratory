@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+import requests
+from app.core.exceptions import FailOuterApiResponseException
 
 
 class BaseSocialLoginHelper(metaclass=ABCMeta):
@@ -20,5 +22,11 @@ class KakaoLoginHelper(BaseSocialLoginHelper):
     def is_matched_category(category) -> bool:
         return category == "kakao"
 
-    def validate_token(self):
-        return self.token
+    def validate_token(self) -> bool:
+        url = "https://kapi.kakao.com/v2/user/me"
+        headers = {"Authorization": f"Bearer {self.token}"}
+        res = requests.get(url, headers=headers)
+        if not res.ok:
+            raise FailOuterApiResponseException(f"status_code: {res.status_code}")
+
+        return True
