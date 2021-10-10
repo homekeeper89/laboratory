@@ -1,5 +1,5 @@
 from app.utils.social_login import BaseSocialLoginHelper
-from app.core.exceptions import FailOuterApiResponseException
+from app.core.exceptions import UnexpectedApiResponseException
 from flask_jwt_extended import create_access_token
 from flask import jsonify
 
@@ -13,7 +13,7 @@ class ValidateAccessTokenUseCase:
         try:
             user_data = social_helper.validate_token()
             token = create_access_token(identity="kkk")
-        except FailOuterApiResponseException as fe:
+        except UnexpectedApiResponseException as fe:
             # TODO fail response 표준 규격 만들기
             print(f"{fe.msg}")
             return jsonify(error=str(fe.msg)), 401

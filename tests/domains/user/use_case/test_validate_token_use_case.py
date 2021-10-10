@@ -12,7 +12,7 @@ def test_get_social_helpert_should_return_expected(category):
 
 
 def test_use_case_should_return_data(app, requests_mock, get_token_data):
-    requests_mock.get("https://kapi.kakao.com/v2/user/me", text="data", status_code=200)
+    requests_mock.get("https://kapi.kakao.com/v2/user/me", json={"a": "b"}, status_code=200)
     data = get_token_data()
     uc = ValidateAccessTokenUseCase()
     res = uc.execute(data["category"], data["access_token"])

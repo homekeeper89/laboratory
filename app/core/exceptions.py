@@ -6,5 +6,9 @@ class BaseCustomException(Exception):
         return self.msg
 
 
-class FailOuterApiResponseException(BaseCustomException):
+class UnexpectedApiResponseException(BaseCustomException):
+    pass
+
+
+class UnexpectedDataException(BaseCustomException):
     pass
