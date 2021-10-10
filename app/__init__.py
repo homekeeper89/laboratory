@@ -5,6 +5,9 @@ from flasgger import Swagger
 from .utils import get_swagger_config
 from app.domains import main_api
 from flask_jwt_extended import JWTManager
+from flask_socketio import SocketIO
+
+socketio = SocketIO()
 
 
 def create_app(env: str = "dev") -> Flask:
@@ -15,6 +18,7 @@ def create_app(env: str = "dev") -> Flask:
         JWTManager(app)
         app.register_blueprint(main_api)
         Swagger(app, **get_swagger_config())
+        socketio.init_app(app)
 
     @app.route("/")
     def health_check():
