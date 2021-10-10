@@ -35,5 +35,21 @@ responses:
                 category:
                   type: string
                   description: 소셜 로그인 종류
-  400:
-    description: TBD
+  401:
+    description: 전달 받은 토큰과 해당 소셜 로그인 서버와 통신 실패
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: 실패 사유
+  409:
+    description: 소셜 로그인 서버로부터 받은 데이터 파싱 실패
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: 실패 사유

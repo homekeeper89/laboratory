@@ -1,5 +1,5 @@
 from app.utils.social_login import BaseSocialLoginHelper
-from app.core.exceptions import UnexpectedApiResponseException
+from app.core.exceptions import UnexpectedApiResponseException, UnexpectedDataException
 from flask_jwt_extended import create_access_token
 from flask import jsonify
 
@@ -11,12 +11,19 @@ class ValidateAccessTokenUseCase:
     def execute(self, category: str, token: str):
         social_helper = self.__get_helper(category, token)
         try:
-            user_data = social_helper.validate_token()
-            token = create_access_token(identity="kkk")
-        except UnexpectedApiResponseException as fe:
+            user_data = social_helper.parsing_data()
+            token = create_access_token(identity=user_data)
+        except UnexpectedApiResponseException as ure:
             # TODO fail response 표준 규격 만들기
-            print(f"{fe.msg}")
-            return jsonify(error=str(fe.msg)), 401
+            print(f"{ure.msg}")
+            return (
+                jsonify(error=f"fail_commuicate_to_target_server, may_be_given_token_is_weird"),
+                401,
+            )
+        except UnexpectedDataException as ude:
+            print(f"{ude.msg}")
+            return jsonify(error=f"fail_to_parse_data"), 409
+
         # TODO success response 표준 규격 만들기
         data = {"access_token": token}
         meta = {"category": category}
