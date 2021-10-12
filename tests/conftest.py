@@ -1,11 +1,9 @@
-from _pytest.main import Session
 import pytest
-from app import create_app
+from app import create_app, socketio
 
 
 @pytest.fixture(scope="session")
 def app():
-
     app = create_app("test")
     app_context = app.app_context()
     app_context.push()
@@ -13,6 +11,12 @@ def app():
     yield app
 
     app_context.pop()
+
+
+@pytest.fixture(scope="session")
+def socket_app(app):
+    socketio.init_app(app)
+    yield socketio
 
 
 @pytest.fixture(scope="session")
