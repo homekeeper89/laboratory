@@ -1,8 +1,7 @@
 from flask import request
-from flask import session
 from app import socketio
 from flask_socketio import emit, join_room, leave_room, send
-from flask import Flask, session, request, json as flask_json
+from flask import request
 import json
 
 @socketio.on('disconnect', namespace="/running")
