@@ -206,6 +206,14 @@ python-socketio = ">=5.0.2"
 
 [[package]]
 category = "main"
+description = "Calculate the distance between 2 points on Earth."
+name = "haversine"
+optional = false
+python-versions = ">=3.5"
+version = "2.5.1"
+
+[[package]]
+category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 marker = "python_version >= \"3\""
 name = "idna"
@@ -753,7 +761,7 @@ version = "2.0.1"
 watchdog = ["watchdog"]
 
 [metadata]
-content-hash = "a4be283c5ef0d648ca771259f2b4901914d4f446f79459057ab37ca61d19127b"
+content-hash = "a8e0f8b7726bf2f43d5753959761ac8c5b31bd124aa4bbf2a9bed490354de8a8"
 python-versions = "^3.8.2"
 
 [metadata.files]
@@ -877,6 +885,10 @@ flask-jwt-extended = [
 flask-socketio = [
     {file = "Flask-SocketIO-5.1.1.tar.gz", hash = "sha256:1efdaacc7a26e94f2b197a80079b1058f6aa644a6094c0a322349e2b9c41f6b1"},
     {file = "Flask_SocketIO-5.1.1-py3-none-any.whl", hash = "sha256:07e1899e3b4851978b2ac8642080156c6294f8d0fc5212b4e4bcca713830306a"},
+]
+haversine = [
+    {file = "haversine-2.5.1-py2.py3-none-any.whl", hash = "sha256:6e76933a1042e6e62464b66ef686331e2798147eeedcb32b503db696d7bf0582"},
+    {file = "haversine-2.5.1.tar.gz", hash = "sha256:357e41dfddc4a0f2b1c941d92a590cac840f7ce4b3da14b45b68d968b3ad7cc7"},
 ]
 idna = [
     {file = "idna-3.2-py3-none-any.whl", hash = "sha256:14475042e284991034cb48e06f6851428fb14c4dc953acd9be9a5e95c7b6dd7a"},
