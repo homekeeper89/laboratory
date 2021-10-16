@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from .config import config
 from flasgger import Swagger
-from .utils import get_swagger_config
+from .utils.swagger import get_swagger_config
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 

@@ -1,5 +1,5 @@
 from flask import current_app
-
+from .schema.sample import data
 TITLE = "RUN WITH ME"
 
 
@@ -23,6 +23,9 @@ def get_swagger_config() -> dict:
             "swagger_ui": True,
             "specs_route": "/odin/docs",
             "headers": [],
+            "components": {
+                "schemas": data,
+            },
         },
         "template": {
             "info": {
