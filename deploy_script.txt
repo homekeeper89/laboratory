@@ -1,0 +1,8 @@
+git pull origin develop
+
+
+# https://stackoverflow.com/questions/32073971/stopping-docker-containers-by-image-name-ubuntu
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=run_with_me --format="{{.ID}}"))
+docker rmi $(docker images | grep 'run_with_me')
+
+make build_compose

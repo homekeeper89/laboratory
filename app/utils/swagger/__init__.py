@@ -1,5 +1,5 @@
 from flask import current_app
-from .schema.sample import data
+from .schema.socket import data
 TITLE = "RUN WITH ME"
 
 

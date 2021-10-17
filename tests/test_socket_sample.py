@@ -1,9 +1,10 @@
 # NOTE https://github.com/miguelgrinberg/Flask-socket_app/blob/main/test_socket_app.py
 # NOTE https://blog.naver.com/PostView.nhn?isHttpsRedirect=true&blogId=shino1025&logNo=222179697262&parentCategoryNo=&categoryNo=33&viewDate=&isShowPopularPosts=true&from=search
+import json
 
 
 def test_leaving_room_should_share_message(app, socket_app):
-    running_namespace = "/running"
+    running_namespace = "/running/v1"
     first_user = socket_app.test_client(app, namespace=running_namespace)
     second_user = socket_app.test_client(app, namespace=running_namespace)
 
@@ -22,8 +23,9 @@ def test_leaving_room_should_share_message(app, socket_app):
     res = second_user.get_received(running_namespace)
     assert res
 
+
 def test_each_user_should_share_data(app, socket_app):
-    running_namespace = "/running"
+    running_namespace = "/running/v1"
     first_user = socket_app.test_client(app, namespace=running_namespace)
     second_user = socket_app.test_client(app, namespace=running_namespace)
 
@@ -47,7 +49,7 @@ def test_each_user_should_share_data(app, socket_app):
 
 
 def test_each_user_should_join_room(app, socket_app):
-    running_namespace = "/running"
+    running_namespace = "/running/v1"
     first_user = socket_app.test_client(app, namespace=running_namespace)
     second_user = socket_app.test_client(app, namespace=running_namespace)
 
@@ -60,15 +62,18 @@ def test_each_user_should_join_room(app, socket_app):
     second_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
 
     received = first_user.get_received(running_namespace)
-    assert received[0]["name"] == "joinning_room_success"
+    assert received[0]["name"] == "join_room_success"
 
 
 def test_each_user_should_connected_running_rooms(app, socket_app):
-    running_namespace = "/running"
+    running_namespace = "/running/v1"
     first_user = socket_app.test_client(app, namespace=running_namespace)
     second_user = socket_app.test_client(app, namespace=running_namespace)
 
     data = first_user.get_received(running_namespace)
-    assert data
+
+    args = json.loads(data[0]["args"])
+    assert args["status"] == 200
     data = second_user.get_received(running_namespace)
-    assert data
+    args = json.loads(data[0]["args"])
+    assert args["status"] == 200
