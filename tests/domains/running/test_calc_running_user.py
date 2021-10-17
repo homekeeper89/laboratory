@@ -1,5 +1,8 @@
+import json
+
+
 def test_running_socket_should_calc_distance(app, socket_app, get_round_data):
-    running_namespace = "/running"
+    running_namespace = "/running/v1"
     first_user = socket_app.test_client(app, namespace=running_namespace)
 
     first_user.get_received(running_namespace)
