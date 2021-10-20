@@ -8,8 +8,10 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = "super-sEcReat"
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
     JWT_SECRET_KEY = "super-123-power-456"
+
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
