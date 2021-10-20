@@ -1,5 +1,6 @@
 import pytest
 from app import create_app, socketio
+from app.core.database import db as _db
 
 
 @pytest.fixture(scope="session")
@@ -11,6 +12,31 @@ def app():
     yield app
 
     app_context.pop()
+
+
+@pytest.fixture(scope="session")
+def db(app):
+    _db.create_all()
+    yield _db
+    _db.drop_all()
+
+
+@pytest.fixture(scope="function")
+def session(app, db, request):
+    """Creates a new database session for each test, rolling back changes afterwards"""
+    connection = _db.engine.connect()
+    transaction = connection.begin()
+
+    options = dict(bind=connection, binds={})
+    session = _db.create_scoped_session(options=options)
+
+    _db.session = session  # 1번 상황을 위한 세팅
+
+    yield session  # 2번 상황을 위한 세팅
+
+    transaction.rollback()
+    connection.close()
+    session.remove()
 
 
 @pytest.fixture(scope="session")
@@ -46,23 +72,24 @@ def sample_kakao_data():
         },
     }
 
+
 @pytest.fixture
 def get_round_data():
     # 약 200m 데이터
     return [
-    (37.355422, 126.936847),
-    (37.355435, 126.936721),
-    (37.355435, 126.936539),
-    (37.355350, 126.936346),
-    (37.355235, 126.936207),
-    (37.355116, 126.936127),
-    (37.354971, 126.935993),
-    (37.354805, 126.935867),
-    (37.354688, 126.935770),
-    (37.354581, 126.935690),
-    (37.354481, 126.935634),
-    (37.354406, 126.935623),
-    (37.354310, 126.935626),
-    (37.354229, 126.935656),
-    (37.354088, 126.935731),
-]
+        (37.355422, 126.936847),
+        (37.355435, 126.936721),
+        (37.355435, 126.936539),
+        (37.355350, 126.936346),
+        (37.355235, 126.936207),
+        (37.355116, 126.936127),
+        (37.354971, 126.935993),
+        (37.354805, 126.935867),
+        (37.354688, 126.935770),
+        (37.354581, 126.935690),
+        (37.354481, 126.935634),
+        (37.354406, 126.935623),
+        (37.354310, 126.935626),
+        (37.354229, 126.935656),
+        (37.354088, 126.935731),
+    ]

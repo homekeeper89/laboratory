@@ -8,8 +8,10 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = "super-sEcReat"
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
     JWT_SECRET_KEY = "super-123-power-456"
+
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
@@ -22,7 +24,7 @@ class DevelopmentConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "dev"
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@127.0.0.1:5678/local_dev"
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@localhost:3306/practice"
 
 
 class TestConfig(Config):

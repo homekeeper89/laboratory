@@ -6,3 +6,6 @@ build_compose:
 	docker-compose up -d
 ping_app:
 	curl http://localhost:8000/ping
+
+sync_db:
+	flask-sqlacodegen "mysql+mysqlconnector://root:root@localhost:3306/practice" --flask > models.py 

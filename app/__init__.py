@@ -5,6 +5,7 @@ from flasgger import Swagger
 from .utils.swagger import get_swagger_config
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
+from app.core.database import db, migrate
 
 socketio = SocketIO()
 
@@ -18,7 +19,10 @@ def create_app(env: str = "dev") -> Flask:
         from app.domains import main_api
 
         app.register_blueprint(main_api)
+
         Swagger(app, **get_swagger_config())
+        db.init_app(app)
+        migrate.init_app(app, db)
         socketio.init_app(app)
 
     @app.route("/")
@@ -27,3 +31,4 @@ def create_app(env: str = "dev") -> Flask:
         return f"env:{env} SUCCESS"
 
     return app
+
