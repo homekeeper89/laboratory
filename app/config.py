@@ -1,4 +1,5 @@
 import os
+from dotenv import dotenv_values
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,14 +18,22 @@ class Config(object):
 class ProductionConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "prod"
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_prod"
+
+    def __init__(self):
+        config = dotenv_values(".env.prod")
+        for key, value in config.items():
+            setattr(self, key, value)
 
 
 class DevelopmentConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "dev"
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@localhost:3306/practice"
+
+    def __init__(self):
+        config = dotenv_values(".env.dev")
+        for key, value in config.items():
+            setattr(self, key, value)
 
 
 class TestConfig(Config):
