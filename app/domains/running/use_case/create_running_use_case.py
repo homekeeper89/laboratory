@@ -34,8 +34,13 @@ class CreateRunningUseCase:
         }
 
     def __has_user_ready_running(self, user_id: int):
-        record = self.__running_repo.get_record_by_user_id(user_id)
-        if getattr(record, "status", None) == RunningStatusEnum.WAITING:
+        invalid_status_list = [
+            RunningStatusEnum.WAITING,
+            RunningStatusEnum.ATTENDING,
+            RunningStatusEnum.IN_PROGRESS,
+        ]
+        record = self.__running_repo.get_records_by_user_id(user_id, invalid_status_list)
+        if record:
             raise AlreadyStatusException
 
     def __make_invite_code(self, category: RunningCategoryEnum) -> Optional[str]:

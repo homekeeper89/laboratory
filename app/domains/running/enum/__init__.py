@@ -11,7 +11,7 @@ class RunningStatusEnum(BaseEnum):
 
     WAITING = auto()
     ATTENDING = auto()
-    INPROGRESS = auto()
+    IN_PROGRESS = auto()
     TERMINATED = auto()
 
 

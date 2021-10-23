@@ -3,6 +3,21 @@ from app.domains.running.use_case.create_running_use_case import CreateRunningUs
 from app.domains.running.dto import CreateRunningData, RunningConfigData
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum, RunningStatusEnum
 from app.core.database.models import Running
+from app.core.exceptions import AlreadyStatusException
+
+
+@pytest.mark.parametrize(
+    "status",
+    [(RunningStatusEnum.WAITING), (RunningStatusEnum.IN_PROGRESS), (RunningStatusEnum.ATTENDING)],
+)
+def test_create_running_with_invalid_status_should_raise(session, status):
+    user_id = 1212
+    session.add(Running(user_id=1212, category="cat", mode="md", status=status))
+    session.commit()
+
+    uc = CreateRunningUseCase()
+    with pytest.raises(AlreadyStatusException):
+        uc._CreateRunningUseCase__has_user_ready_running(user_id)
 
 
 def test_ready_running_user_should_not_make_running(session):
