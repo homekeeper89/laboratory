@@ -2,7 +2,6 @@ import pytest
 from app.domains.running.use_case.create_room_use_case import CreateRoomUseCase
 from app.domains.running.dto import CreateRoomData
 
-
 @pytest.mark.parametrize(
     "mode, config, expected",
     [
@@ -16,7 +15,7 @@ def test_validate_mode_should_return_expected(mode, config, expected):
     assert res == expected
 
 
-def test_wrong_mode_should_return_message(app):
+def test_wrong_mode_should_return_message(session):
     dto = CreateRoomData(category="kk", mode="kk", config={"kk": "kk"})
     uc = CreateRoomUseCase()
     res = uc.execute(dto)
