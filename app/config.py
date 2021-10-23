@@ -14,7 +14,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "SQLALCHEMY_DATABASE_URI", "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
     )
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_RECORD_QUERIES = True
 
 
 class ProductionConfig(Config):

@@ -2,7 +2,7 @@ import json
 import pytest
 
 
-def test_create_room_should_return_running_id(test_client, get_json_headers):
+def test_create_room_should_return_running_id(session, test_client, get_json_headers):
     endpoint = "/api/running/v1/room"
     data = {
         "category": "private",  # open
