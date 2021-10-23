@@ -1,11 +1,15 @@
 import pytest
-from app.domains.running.dto import CreateRoomData
+from app.domains.running.dto import CreateRoomData, RunningConfigData
 from pydantic.error_wrappers import ValidationError
-from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
 
 
 @pytest.mark.parametrize(
-    "category, mode, config", [("kk", "kk", {}), (RunningCategoryEnum.PRIVATE, "kk", {})]
+    "category, mode, config",
+    [
+        ("kk", "kk", {}),
+        ("PRIVATE", "kk", {}),
+        ("PRIVATE", "FREE", {"kk": "kk"}),
+    ],
 )
 def test_wrong_parameter_should_raise_error(category, mode, config):
     with pytest.raises(ValidationError):
@@ -13,4 +17,5 @@ def test_wrong_parameter_should_raise_error(category, mode, config):
 
 
 def test_room_dto_should_not_raise_error():
-    assert CreateRoomData(123, "PRIVATE", "COMPETITION", {})
+    config_data = RunningConfigData(10, 10, 5)
+    assert CreateRoomData(123, "PRIVATE", "COMPETITION", config_data)
