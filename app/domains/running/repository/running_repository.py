@@ -1,10 +1,24 @@
 from app.core.database import session
 from app.core.database.models import Running
+from app.core.exceptions import RepoException
+from app.domains.running.enum import RunningStatusEnum
 
 
 class RunningRepository:
+    def get_record_by_user_id(self, user_id: int):
+        try:
+            return session.query(Running).filter(Running.user_id == user_id).first()
+        except Exception as e:
+            print(e)
+            raise RepoException(msg="unexpected_error_occur")
+
     def create_running(
-        self, user_id: int, category: str, mode: str, invite_code: str, status: str
+        self,
+        user_id: int,
+        category: str,
+        mode: str,
+        invite_code: str,
+        status: str = RunningStatusEnum.WAITING,
     ) -> int:
         try:
             model = Running(
@@ -23,4 +37,4 @@ class RunningRepository:
             session.rollback()
             session.flush()
             print(e)
-            return 0
+            raise RepoException(msg="unexpected_error_occur")

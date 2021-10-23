@@ -2,6 +2,19 @@ from app.base.base_enum import BaseEnum
 from enum import auto
 
 
+class RunningStatusEnum(BaseEnum):
+    """
+    running 의 상태,
+    대기 > 참가 > 진행 > 종료
+    기본 상태는 대기이며 유저는 1개의 대기만 가질 수 있다.
+    """
+
+    WAITING = auto()
+    ATTENDING = auto()
+    INPROGRESS = auto()
+    TERMINATED = auto()
+
+
 class RunningCategoryEnum(BaseEnum):
     """
     방 종류 결정, 이를 바탕으로 public 여부가 결정됨

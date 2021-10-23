@@ -12,3 +12,11 @@ class UnexpectedApiResponseException(BaseCustomException):
 
 class UnexpectedDataException(BaseCustomException):
     pass
+
+
+class RepoException(BaseCustomException):
+    pass
+
+
+class AlreadyStatusException(BaseCustomException):
+    pass
