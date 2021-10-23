@@ -1,4 +1,6 @@
 from pydantic.dataclasses import dataclass
+from pydantic import validator
+from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
 
 
 @dataclass
@@ -11,6 +13,6 @@ class CalcDistanceData:
 @dataclass
 class CreateRoomData:
     user_id: str = ""
-    category: str = ""
-    mode: str = ""
+    category: RunningCategoryEnum = RunningCategoryEnum.PRIVATE
+    mode: RunningModeEnum = RunningModeEnum.COMPETITION
     config: dict = None
