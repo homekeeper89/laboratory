@@ -1,6 +1,17 @@
 import pytest
 from app.domains.running.dto import CreateRoomData, RunningConfigData
 from pydantic.error_wrappers import ValidationError
+from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
+
+
+def test_dict_init_should_make_data_dto():
+    data = {
+        "category": "private",  # open
+        "mode": "competition",  # free
+        "config": {"distance": 123},
+    }
+    data = CreateRoomData().make(**data)
+    assert data.category == RunningCategoryEnum.PRIVATE
 
 
 @pytest.mark.parametrize(

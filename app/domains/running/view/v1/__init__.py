@@ -9,9 +9,6 @@ from app.domains.running.dto import CreateRoomData
 @swag_from("create_room.yml")
 def create_room():
     data = request.json
-    print(data)
     # TODO request validation 만들어야함
-    dto = CreateRoomData(
-        category=data.get("category"), mode=data.get("mode"), config=data.get("config")
-    )
+    dto = CreateRoomData().make(**data)
     return CreateRoomUseCase().execute(dto)

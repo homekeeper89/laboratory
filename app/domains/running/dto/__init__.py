@@ -26,3 +26,13 @@ class CreateRoomData:
     category: RunningCategoryEnum = RunningCategoryEnum.PRIVATE
     mode: RunningModeEnum = RunningModeEnum.COMPETITION
     config: RunningConfigData = RunningConfigData()
+
+    def make(self, **kwargs):
+        for key, value in kwargs.items():
+            if key == "config":
+                for n_key, n_value in value.items():
+                    setattr(self.config, n_key, n_value)
+                continue
+            value = value.upper()
+            setattr(self, key, value)
+        return self
