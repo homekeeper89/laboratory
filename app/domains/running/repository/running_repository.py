@@ -3,23 +3,24 @@ from app.core.database.models import Running
 
 
 class RunningRepository:
-    def create_running(self, user_id: int, category: str, mode: str, invite_code: str, status: str):
+    def create_running(
+        self, user_id: int, category: str, mode: str, invite_code: str, status: str
+    ) -> int:
         try:
-            session.add(
-                Running(
-                    user_id=user_id,
-                    category=category,
-                    mode=mode,
-                    invite_code=invite_code,
-                    status=status,
-                )
+            model = Running(
+                user_id=user_id,
+                category=category,
+                mode=mode,
+                invite_code=invite_code,
+                status=status,
             )
+            session.add(model)
             session.commit()
-            res = True
+            session.refresh(model)
+
+            return model.id
         except Exception as e:
             session.rollback()
             session.flush()
             print(e)
-            res = False
-
-        return res
+            return 0
