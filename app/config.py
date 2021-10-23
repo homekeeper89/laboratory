@@ -8,10 +8,12 @@ class Config(object):
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
-    SECRET_KEY = "super-sEcReat"
-    JWT_SECRET_KEY = "super-123-power-456"
+    SECRET_KEY = os.getenv("SECRET_KEY", "SECRET")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "JWT-SECRET")
 
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
