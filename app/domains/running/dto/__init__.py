@@ -21,7 +21,7 @@ class CalcDistanceData:
 
 
 @dataclass
-class CreateRoomData:
+class CreateRunningData:
     user_id: str = ""
     category: RunningCategoryEnum = RunningCategoryEnum.PRIVATE
     mode: RunningModeEnum = RunningModeEnum.COMPETITION

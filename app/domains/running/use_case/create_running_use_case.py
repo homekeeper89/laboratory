@@ -1,16 +1,16 @@
 from typing import Optional
 import uuid
-from app.domains.running.dto import CreateRoomData, RunningConfigData
+from app.domains.running.dto import CreateRunningData, RunningConfigData
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum, RunningStatusEnum
 from app.domains.running.repository.running_repository import RunningRepository
 from app.core.exceptions import AlreadyStatusException
 
 
-class CreateRoomUseCase:
+class CreateRunningUseCase:
     def __init__(self):
         self.__running_repo = RunningRepository()
 
-    def execute(self, dto: CreateRoomData):
+    def execute(self, dto: CreateRunningData):
         try:
             if not self.__validate_config(dto.mode, dto.config):
                 raise AssertionError(f"wrong_mode: {dto.mode}")
@@ -18,7 +18,7 @@ class CreateRoomUseCase:
             self.__has_user_ready_running(dto.user_id)
 
             invite_code = self.__make_invite_code(dto.category)
-            room_id = self.__running_repo.create_running(
+            running_id = self.__running_repo.create_running(
                 dto.user_id, dto.category, dto.mode, invite_code
             )
         except AlreadyStatusException:
@@ -29,7 +29,7 @@ class CreateRoomUseCase:
             return {"data": {"message": f"wrong_config_or_mode: {dto}"}, "meta": {}}
 
         return {
-            "data": {"room_id": room_id, "invite_code": invite_code},
+            "data": {"running_id": running_id, "invite_code": invite_code},
             "meta": {"category": dto.category, "mode": dto.mode},
         }
 

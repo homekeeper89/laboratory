@@ -12,13 +12,13 @@ def test_leaving_room_should_share_message(app, socket_app):
     second_user.get_received(running_namespace)
 
     join_room = "join_room"
-    unique_room_id = "some_unique_id"
-    first_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
-    second_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
+    unique_running_id = "some_unique_id"
+    first_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
+    second_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
     first_user.get_received(running_namespace)
     second_user.get_received(running_namespace)
 
-    data = {"room_id": unique_room_id, "lat": 12345, "lot": 123}
+    data = {"running_id": unique_running_id, "lat": 12345, "lot": 123}
     first_user.emit("leave_room", data, namespace=running_namespace)
     res = second_user.get_received(running_namespace)
     assert res
@@ -33,13 +33,13 @@ def test_each_user_should_share_data(app, socket_app):
     second_user.get_received(running_namespace)
 
     join_room = "join_room"
-    unique_room_id = "some_unique_id"
-    first_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
-    second_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
+    unique_running_id = "some_unique_id"
+    first_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
+    second_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
     first_user.get_received(running_namespace)
     second_user.get_received(running_namespace)
 
-    data = {"room_id": unique_room_id, "lat": 12345, "lot": 123}
+    data = {"running_id": unique_running_id, "lat": 12345, "lot": 123}
     first_user.emit("send_gps_data", data, namespace=running_namespace)
     data = second_user.get_received(running_namespace)
     assert data[0]["name"] == "calc_data"
@@ -57,9 +57,9 @@ def test_each_user_should_join_room(app, socket_app):
     second_user.get_received(running_namespace)
 
     join_room = "join_room"
-    unique_room_id = "some_unique_id"
-    first_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
-    second_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
+    unique_running_id = "some_unique_id"
+    first_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
+    second_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
 
     received = first_user.get_received(running_namespace)
     assert received[0]["name"] == "join_room_success"

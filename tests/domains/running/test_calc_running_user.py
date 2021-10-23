@@ -8,11 +8,11 @@ def test_running_socket_should_calc_distance(app, socket_app, get_round_data):
     first_user.get_received(running_namespace)
 
     join_room = "join_room"
-    unique_room_id = "some_unique_id"
-    first_user.emit(join_room, {"room_id": unique_room_id}, namespace=running_namespace)
+    unique_running_id = "some_unique_id"
+    first_user.emit(join_room, {"running_id": unique_running_id}, namespace=running_namespace)
     first_user.get_received(running_namespace)
 
-    data = {"room_id": unique_room_id, "from_data": (0, 0), "to_data": (0, 0), "distance": 0}
+    data = {"running_id": unique_running_id, "from_data": (0, 0), "to_data": (0, 0), "distance": 0}
 
     first_user.emit("send_gps_data", data, namespace=running_namespace)
     data = first_user.get_received(running_namespace)
@@ -23,7 +23,7 @@ def test_running_socket_should_calc_distance(app, socket_app, get_round_data):
         from_data = get_round_data[index]
         data = {
             "user_id": "unique_user_id",
-            "room_id": unique_room_id,
+            "running_id": unique_running_id,
             "from_data": from_data,
             "to_data": to_data,
             "distance": distance,

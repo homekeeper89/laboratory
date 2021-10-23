@@ -1,5 +1,5 @@
 import pytest
-from app.domains.running.dto import CreateRoomData, RunningConfigData
+from app.domains.running.dto import CreateRunningData, RunningConfigData
 from pydantic.error_wrappers import ValidationError
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
 
@@ -10,7 +10,7 @@ def test_dict_init_should_make_data_dto():
         "mode": "competition",  # free
         "config": {"distance": 123},
     }
-    data = CreateRoomData().make(**data)
+    data = CreateRunningData().make(**data)
     assert data.category == RunningCategoryEnum.PRIVATE
 
 
@@ -24,9 +24,9 @@ def test_dict_init_should_make_data_dto():
 )
 def test_wrong_parameter_should_raise_error(category, mode, config):
     with pytest.raises(ValidationError):
-        CreateRoomData(123, category, mode, config)
+        CreateRunningData(123, category, mode, config)
 
 
 def test_room_dto_should_not_raise_error():
     config_data = RunningConfigData(10, 10, 5)
-    assert CreateRoomData(123, "PRIVATE", "COMPETITION", config_data)
+    assert CreateRunningData(123, "PRIVATE", "COMPETITION", config_data)

@@ -41,7 +41,7 @@ def on_disconnect():
 
 @socketio.on("send_gps_data", namespace="/running/v1")
 def on_room_event(data):
-    room_id = data.pop("room_id")
+    running_id = data.pop("running_id")
     user_id = data.get("user_unique_id")
 
     uc = CalculateDistanceUseCase()
@@ -57,33 +57,32 @@ def on_room_event(data):
     }
     meta = {"message": "success"}
     response = make_response(data, meta)
-    emit("calc_data", response, room=room_id)
+    emit("calc_data", response, room=running_id)
 
 
 @socketio.on("leave_room", namespace="/running/v1")
 def on_leave_room_namespace(data):
-    room_id = data.get("room_id", 0)
+    running_id = data.get("running_id", 0)
     # TODO room counts 줄이기
     try:
-        leave_room(data["room_id"])
+        leave_room(data["running_id"])
         response = make_response({}, {}, 200)
-        emit("leave_room_success", response, room=room_id)
+        emit("leave_room_success", response, room=running_id)
     except Exception as e:
         print(f"leave_room_error: {e.args}")
         response = make_response({}, {"message": "error_occur"}, 400)
         send(json.dumps(response))
 
 
-
 @socketio.on("join_room", namespace="/running/v1")
 def on_join_room_namespace(data):
-    room_id = data.get("room_id", 0)
-    # 해당 room_id 의 상태 확인
-        # 인원 & 상태 
+    running_id = data.get("running_id", 0)
+    # 해당 running_id 의 상태 확인
+    # 인원 & 상태
     try:
-        join_room(data["room_id"])
+        join_room(data["running_id"])
         response = make_response({}, {}, 200)
-        emit("join_room_success", response, room=room_id)
+        emit("join_room_success", response, room=running_id)
     except Exception as e:
         print(f"join_room_error: {e.args}")
         response = make_response({}, {"message": "error_occur"}, 400)
