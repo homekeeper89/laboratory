@@ -1,5 +1,4 @@
 import os
-from dotenv import dotenv_values
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,21 +21,11 @@ class ProductionConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "prod"
     DEBUG = False
 
-    def __init__(self):
-        config = dotenv_values(".env.prod")
-        for key, value in config.items():
-            setattr(self, key, value)
-
 
 class DevelopmentConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "dev"
     DEVELOPMENT = True
     DEBUG = True
-
-    def __init__(self):
-        config = dotenv_values(".env.dev")
-        for key, value in config.items():
-            setattr(self, key, value)
 
 
 class TestConfig(Config):
