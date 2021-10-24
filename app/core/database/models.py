@@ -19,6 +19,11 @@ class RunningConfig(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, comment="기본키")
     running_id = db.Column(db.Integer, nullable=False, comment="달리기 기본키")
+    category = db.Column(
+        db.String(20),
+        nullable=False,
+        comment="config 종류, distance, limit_user_counts, limit_minutes",
+    )
     value = db.Column(db.Integer, nullable=False, comment="값")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")

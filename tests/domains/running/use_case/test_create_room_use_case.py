@@ -7,8 +7,24 @@ from app.domains.running.enum import (
     RunningParticipantEnum,
     RunningStatusEnum,
 )
-from app.core.database.models import Running, RunningParticipant
+from app.core.database.models import Running, RunningParticipant, RunningConfig
 from app.core.exceptions import AlreadyStatusException
+
+
+@pytest.mark.parametrize(
+    "mode, data, expected",
+    [
+        (RunningModeEnum.COMPETITION, RunningConfigData(distance=600), 1),
+        (RunningModeEnum.FREE, RunningConfigData(limit_user_counts=10, limit_minutes=10), 2),
+    ],
+)
+def test_create_room_should_make_config(session, mode, data, expected):
+    dto = CreateRunningData(user_id=1234, mode=mode, config=data)
+    res = CreateRunningUseCase().execute(dto)
+    running_id = res["data"]["running_id"]
+
+    res = session.query(RunningConfig).filter(RunningConfig.running_id == running_id).count()
+    assert res == expected
 
 
 def test_create_room_should_make_join(session):

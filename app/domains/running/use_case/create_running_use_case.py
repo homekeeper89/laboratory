@@ -19,7 +19,7 @@ class CreateRunningUseCase:
 
             invite_code = self.__make_invite_code(dto.category)
             running_id = self.__running_repo.create_running(
-                dto.user_id, dto.category, dto.mode, invite_code
+                dto.user_id, dto.category, dto.mode, invite_code, dto.config
             )
         except AlreadyStatusException:
             return {"data": {"message": f"has_ready_status_running: {dto}"}, "meta": {}}
@@ -50,9 +50,12 @@ class CreateRunningUseCase:
         if mode == RunningModeEnum.COMPETITION:
             assert config.distance, assert_msg
             res = True
+            config.limit_user_counts = None
+            config.limit_minutes = None
 
         if mode == RunningModeEnum.FREE:
             assert config.limit_user_counts and config.limit_minutes, assert_msg
             res = True
+            config.distance = None
 
         return res
