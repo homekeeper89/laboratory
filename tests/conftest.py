@@ -14,26 +14,28 @@ def app():
     app_context.pop()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def db(app):
+    _db.app = app
     _db.create_all()
     yield _db
     _db.drop_all()
 
 
+from app.core.database.models import Running
+
+
 @pytest.fixture(scope="function")
-def session(app, db, request):
+def session(db):
     """Creates a new database session for each test, rolling back changes afterwards"""
-    connection = _db.engine.connect()
+    connection = db.engine.connect()
     transaction = connection.begin()
 
     options = dict(bind=connection, binds={})
-    session = _db.create_scoped_session(options=options)
-
-    _db.session = session  # 1번 상황을 위한 세팅
+    session = db.create_scoped_session(options=options)
+    db.session = session  # 1번 상황을 위한 세팅
 
     yield session  # 2번 상황을 위한 세팅
-
     transaction.rollback()
     connection.close()
     session.remove()

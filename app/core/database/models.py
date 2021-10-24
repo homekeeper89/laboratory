@@ -47,7 +47,7 @@ class Running(db.Model):
         comment="private, open 으로 구분",
     )
     mode = db.Column(db.String(20), nullable=False, comment="러닝 모드")
-    invite_code = db.Column(db.String(10), nullable=False, comment="private 일 경우 필요한 코드")
+    invite_code = db.Column(db.String(10), comment="private 일 경우 필요한 코드")
     status = db.Column(db.String(20), nullable=False, comment="현재 방의 상태")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")
