@@ -7,6 +7,13 @@ from typing import List
 
 
 class RunningRepository:
+    def get_record_by_id(self, running_id: int):
+        try:
+            return session.query(Running).filter(Running.id == running_id).first()
+        except Exception as e:
+            print(e)
+            raise RepoException(msg="unexpected_error_occur")
+
     def get_records_by_user_id(self, user_id: int, status_list: List[str]):
         try:
             return (
@@ -15,6 +22,17 @@ class RunningRepository:
                 .filter(Running.status.in_(status_list))
                 .all()
             )
+        except Exception as e:
+            print(e)
+            raise RepoException(msg="unexpected_error_occur")
+
+    def create_running_participant(
+        self, running_id: int, user_id: int, status: str = RunningParticipantEnum.WAITING
+    ):
+        try:
+            model = RunningParticipant(running_id=running_id, user_id=user_id, status=status)
+            session.add(model)
+            session.commit()
         except Exception as e:
             print(e)
             raise RepoException(msg="unexpected_error_occur")
