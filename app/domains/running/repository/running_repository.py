@@ -26,7 +26,7 @@ class RunningRepository:
         mode: str,
         invite_code: str,
         config: RunningConfigData,
-        status: str = RunningStatusEnum.ATTENDING,
+        status: str = RunningStatusEnum.ATTENDING.name,
     ) -> int:
         """
             running 을 생성하면 생성한 사람은 참가자로 포함되어야함.
@@ -47,7 +47,7 @@ class RunningRepository:
             session.flush()
 
             rp_model = RunningParticipant(
-                user_id=user_id, running_id=model.id, status=RunningParticipantEnum.WAITING
+                user_id=user_id, running_id=model.id, status=RunningParticipantEnum.WAITING.name
             )
             session.add(rp_model)
 
