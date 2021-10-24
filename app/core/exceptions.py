@@ -6,17 +6,26 @@ class BaseCustomException(Exception):
         return self.msg
 
 
-class UnexpectedApiResponseException(BaseCustomException):
-    pass
+class ThirdPartyCommunicationException(BaseCustomException):
+    HTTP_CODE = 409
+    ERROR = "fail_communicate_with_out_service"
 
 
 class UnexpectedDataException(BaseCustomException):
-    pass
+    HTTP_CODE = 409
+    ERROR = "invalid_data_format"
 
 
 class RepoException(BaseCustomException):
-    pass
+    HTTP_CODE = 500
+    ERROR = "internal_error_occur"
 
 
-class InvalidStatusException(BaseCustomException):
-    pass
+class FailUseCaseLogicException(BaseCustomException):
+    HTTP_CODE = 409
+    ERROR = "fail_in_use_case"
+
+
+class NotFoundException(BaseCustomException):
+    HTTP_CODE = 404
+    ERROR = "not_found_resource"

@@ -1,6 +1,6 @@
 from app.domains.running.enum import RunningStatusEnum
 from app.domains.running.repository.running_repository import RunningRepository
-from app.core.exceptions import InvalidStatusException, RepoException
+from app.core.exceptions import FailUseCaseLogicException, RepoException, NotFoundException
 
 
 class ParticipateRunningUseCase:
@@ -10,17 +10,18 @@ class ParticipateRunningUseCase:
     def execute(self, running_id: int, user_id: int, invite_code: str = None):
         try:
             running = self.__running_repo.get_record_by_id(running_id)
-            assert running, f"running: {running_id} not_exists"
+            if not running:
+                raise NotFoundException(msg=f"running_id: {running_id}")
             self.__is_valid_status(running, invite_code)
             self.__running_repo.create_running_participant(running_id, user_id)
-        except RepoException:
-            return {"error": "internal_error", "desc": f"running: {running_id} user_id: {user_id}"}
+        except RepoException as re:
+            return {"error": re, "desc": f"running: {running_id} user_id: {user_id}"}
 
-        except InvalidStatusException as ie:
-            return {"error": "invalid_status", "desc": ie.msg}
+        except FailUseCaseLogicException as ie:
+            return {"error": ie, "desc": ie.msg}
 
-        except AssertionError as ae:
-            return {"error": "not_exists", "desc": ae.args[0]}
+        except NotFoundException as ae:
+            return {"error": ae, "desc": ae.msg}
 
         return {
             "data": {"message": "success"},
@@ -34,10 +35,10 @@ class ParticipateRunningUseCase:
             RunningStatusEnum.IN_PROGRESS.name,
         ]
         if status in invalid_status_list:
-            raise InvalidStatusException(
-                msg=f"running: {running.id} invalid_stats: {running.status}"
+            raise FailUseCaseLogicException(
+                msg=f"running: {running.id} is_invalid_status: {running.status}"
             )
         if running.invite_code and running.invite_code != invite_code:
-            raise InvalidStatusException(
+            raise FailUseCaseLogicException(
                 msg=f"running: {running.id} invite_code_not_correct: {invite_code}"
             )

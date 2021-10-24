@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import requests
-from app.core.exceptions import UnexpectedApiResponseException, UnexpectedDataException
+from app.core.exceptions import ThirdPartyCommunicationException, UnexpectedDataException
 
 
 class BaseSocialLoginHelper(metaclass=ABCMeta):
@@ -31,7 +31,7 @@ class KakaoLoginHelper(BaseSocialLoginHelper):
         headers = {"Authorization": f"Bearer {self.token}"}
         res = requests.get(url, headers=headers)
         if not res.ok:
-            raise UnexpectedApiResponseException(f"status_code: {res.status_code}, {res.text}")
+            raise ThirdPartyCommunicationException(f"status_code: {res.status_code}, {res.text}")
         return res.json()
 
     def parsing_data(self):

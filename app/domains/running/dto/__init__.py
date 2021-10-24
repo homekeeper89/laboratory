@@ -1,5 +1,6 @@
 from pydantic.dataclasses import dataclass
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
+import random
 
 
 @dataclass
@@ -22,7 +23,7 @@ class CalcDistanceData:
 
 @dataclass
 class CreateRunningData:
-    user_id: int = 1234
+    user_id: int = random.randint(1, 100000)
     category: RunningCategoryEnum = RunningCategoryEnum.PRIVATE
     mode: RunningModeEnum = RunningModeEnum.COMPETITION
     config: RunningConfigData = RunningConfigData()

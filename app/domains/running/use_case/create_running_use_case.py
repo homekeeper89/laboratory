@@ -3,7 +3,7 @@ import uuid
 from app.domains.running.dto import CreateRunningData, RunningConfigData
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum, RunningStatusEnum
 from app.domains.running.repository.running_repository import RunningRepository
-from app.core.exceptions import InvalidStatusException
+from app.core.exceptions import FailUseCaseLogicException
 
 
 class CreateRunningUseCase:
@@ -21,7 +21,7 @@ class CreateRunningUseCase:
             running_id = self.__running_repo.create_running(
                 dto.user_id, dto.category, dto.mode, invite_code, dto.config
             )
-        except InvalidStatusException:
+        except FailUseCaseLogicException:
             return {"data": {"message": f"has_ready_status_running: {dto}"}, "meta": {}}
 
         except AssertionError as e:
@@ -37,7 +37,7 @@ class CreateRunningUseCase:
         invalid_status_list = RunningStatusEnum.get_invalid_status()
         record = self.__running_repo.get_records_by_user_id(user_id, invalid_status_list)
         if record:
-            raise InvalidStatusException
+            raise FailUseCaseLogicException
 
     def __make_invite_code(self, category: RunningCategoryEnum) -> Optional[str]:
         if category == RunningCategoryEnum.PUBLIC:

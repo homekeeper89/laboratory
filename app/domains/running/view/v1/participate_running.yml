@@ -30,12 +30,27 @@ responses:
                   description: success 만 내려감
             meta:
               type: object
-  409:
-    description: mode, config 설정이 잘못됨
+  404:
+    description: running_id 가 존재하지 않을때
     content:
       application/json:
         schema:
           properties:
             error:
               type: string
-              description: 실패 사유
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명
+  409:
+    description: 비즈니스 로직을 통과하지 못함
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명

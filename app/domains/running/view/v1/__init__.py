@@ -4,10 +4,12 @@ from flasgger import swag_from
 from app.domains.running.use_case.create_running_use_case import CreateRunningUseCase
 from app.domains.running.dto import CreateRunningData
 from app.domains.running.use_case.participate_running_use_case import ParticipateRunningUseCase
+from app.core.decorator import decorator_http_response
 
 
 @main_api.route("/running/v1/participation", methods=["POST"])
 @swag_from("participate_running.yml")
+@decorator_http_response(200)
 def participate_running():
     data = request.json
     # TODO request validation 만들어야함
@@ -19,6 +21,7 @@ def participate_running():
 
 @main_api.route("/running/v1", methods=["POST"])
 @swag_from("create_running.yml")
+@decorator_http_response(200)
 def create_running():
     data = request.json
     # TODO request validation 만들어야함
