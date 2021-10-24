@@ -1,7 +1,8 @@
 from app.core.database import session
-from app.core.database.models import Running, RunningParticipant
+from app.core.database.models import Running, RunningConfig, RunningParticipant
 from app.core.exceptions import RepoException
 from app.domains.running.enum import RunningStatusEnum, RunningParticipantEnum
+from app.domains.running.dto import RunningConfigData
 from typing import List
 
 
@@ -24,9 +25,12 @@ class RunningRepository:
         category: str,
         mode: str,
         invite_code: str,
+        config: RunningConfigData,
         status: str = RunningStatusEnum.ATTENDING,
     ) -> int:
-        """running 을 생성하면 생성한 사람은 참가자로 포함되어야함.
+        """
+            running 을 생성하면 생성한 사람은 참가자로 포함되어야함.
+            running 을 생성하면 해당 달리기의 설정값도 만들어야함
 
         Returns:
             int: 생성한 running id
@@ -46,6 +50,16 @@ class RunningRepository:
                 user_id=user_id, running_id=model.id, status=RunningParticipantEnum.WAITING
             )
             session.add(rp_model)
+
+            configs = []
+            for field in config.__dataclass_fields__:
+                value = getattr(config, field)
+                category = str(field).upper()
+                if value:
+                    configs.append(
+                        RunningConfig(running_id=model.id, category=category, value=value)
+                    )
+            session.add_all(configs)
             session.commit()
             return model.id
         except Exception as e:
