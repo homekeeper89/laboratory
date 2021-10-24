@@ -22,7 +22,7 @@ class CalcDistanceData:
 
 @dataclass
 class CreateRunningData:
-    user_id: str = ""
+    user_id: int = 1234
     category: RunningCategoryEnum = RunningCategoryEnum.PRIVATE
     mode: RunningModeEnum = RunningModeEnum.COMPETITION
     config: RunningConfigData = RunningConfigData()
