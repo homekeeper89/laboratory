@@ -1,7 +1,7 @@
-유저 방 생성 - 방을 생성하면 생성한 사람은 참가자로 자동 참석 됩니다.
+러닝 생성 - 러닝을 생성하면 생성한 사람은 참가자로 자동 참석 됩니다.
 ---
 tags:
-  - name: "[dev] User Create Room"
+  - name: "Running"
 requestBody:
   required: true
   content:
@@ -12,7 +12,7 @@ requestBody:
           category:
             type: string
             enum: [private, open]
-            description: 비밀 방 & 오픈 방 결정
+            description: 러닝 종류 결정, private 의 경우 invite_code 필요
           mode:
             type: string
             enum: [competition, free]

@@ -18,5 +18,5 @@ class RepoException(BaseCustomException):
     pass
 
 
-class AlreadyStatusException(BaseCustomException):
+class InvalidStatusException(BaseCustomException):
     pass
