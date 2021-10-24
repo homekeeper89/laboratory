@@ -4,6 +4,7 @@ from app.core.exceptions import FailUseCaseLogicException, RepoException, NotFou
 
 
 class ParticipateRunningUseCase:
+    # TODO 인원제한 확인 로직 추가
     def __init__(self):
         self.__running_repo = RunningRepository()
 

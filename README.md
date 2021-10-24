@@ -6,3 +6,7 @@
 
 - http://localhost:8000/ping
 - 또는 make ping_app
+
+# TODO
+- deploy_script 만들기
+- 모든 enum 종류 
