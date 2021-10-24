@@ -29,7 +29,7 @@ class RunningStatusEnum(BaseEnum):
 
     @classmethod
     def get_invalid_status(cls) -> List:
-        return [cls.IN_PROGRESS, cls.ATTENDING]
+        return [cls.IN_PROGRESS.name, cls.ATTENDING.name]
 
 
 class RunningCategoryEnum(BaseEnum):
