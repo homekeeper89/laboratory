@@ -39,6 +39,12 @@ def upgrade():
         "running_configs",
         sa.Column("id", sa.Integer(), nullable=False, comment="기본키"),
         sa.Column("running_id", sa.Integer(), nullable=False, comment="달리기 기본키"),
+        sa.Column(
+            "category",
+            sa.String(length=20),
+            nullable=False,
+            comment="config 종류, distance, limit_user_counts, limit_minutes",
+        ),
         sa.Column("value", sa.Integer(), nullable=False, comment="값"),
         sa.Column("created_at", sa.DateTime(), nullable=False, comment="생성된 시간"),
         sa.Column(
