@@ -27,7 +27,7 @@ class RunningRepository:
             raise RepoException(msg="unexpected_error_occur")
 
     def create_running_participant(
-        self, running_id: int, user_id: int, status: str = RunningParticipantEnum.WAITING
+        self, running_id: int, user_id: int, status: str = RunningParticipantEnum.WAITING.name
     ):
         try:
             model = RunningParticipant(running_id=running_id, user_id=user_id, status=status)

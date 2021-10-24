@@ -15,7 +15,7 @@ def participate_running():
     # TODO request validation 만들어야함
     running_id = data.get("running_id", None)
     user_id = 1234
-    invite_code = data.get("invite_code", None)
+    invite_code = str(data.get("invite_code", None))
     return ParticipateRunningUseCase().execute(running_id, user_id, invite_code)
 
 
