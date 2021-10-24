@@ -7,13 +7,15 @@ from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from app.core.database import db, migrate
 
+
 socketio = SocketIO()
 
 
 def create_app(env: str = "dev") -> Flask:
     app = Flask(__name__)
-    app.config.from_object(config[env])
 
+    app.config.from_object(config[env])
+    print(f"RUN {env}")
     with app.app_context():
         JWTManager(app)
         from app.domains import main_api
@@ -31,4 +33,3 @@ def create_app(env: str = "dev") -> Flask:
         return f"env:{env} SUCCESS"
 
     return app
-
