@@ -1,7 +1,7 @@
 from app.core.database import session
-from app.core.database.models import Running
+from app.core.database.models import Running, RunningParticipant
 from app.core.exceptions import RepoException
-from app.domains.running.enum import RunningStatusEnum
+from app.domains.running.enum import RunningStatusEnum, RunningParticipantEnum
 from typing import List
 
 
@@ -24,8 +24,13 @@ class RunningRepository:
         category: str,
         mode: str,
         invite_code: str,
-        status: str = RunningStatusEnum.WAITING,
+        status: str = RunningStatusEnum.ATTENDING,
     ) -> int:
+        """running 을 생성하면 생성한 사람은 참가자로 포함되어야함.
+
+        Returns:
+            int: 생성한 running id
+        """
         try:
             model = Running(
                 user_id=user_id,
@@ -35,9 +40,13 @@ class RunningRepository:
                 status=status,
             )
             session.add(model)
-            session.commit()
-            session.refresh(model)
+            session.flush()
 
+            rp_model = RunningParticipant(
+                user_id=user_id, running_id=model.id, status=RunningParticipantEnum.WAITING
+            )
+            session.add(rp_model)
+            session.commit()
             return model.id
         except Exception as e:
             session.rollback()

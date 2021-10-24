@@ -6,8 +6,8 @@ from app.domains.running.dto import CreateRunningData
 
 
 @main_api.route("/running/v1/room", methods=["POST"])
-@swag_from("create_room.yml")
-def create_room():
+@swag_from("create_running.yml")
+def create_running():
     data = request.json
     # TODO request validation 만들어야함
     dto = CreateRunningData().make(**data)

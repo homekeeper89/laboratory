@@ -9,5 +9,5 @@ def test_create_record_should_make_record_and_return_id(session):
     assert type(record_id) == int
 
     rec = session.query(Running).filter(Running.user_id == 123).first()
-    assert rec.status == RunningStatusEnum.WAITING
+    assert rec.status == RunningStatusEnum.ATTENDING
     assert record_id == rec.id

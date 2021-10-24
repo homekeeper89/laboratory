@@ -1,4 +1,4 @@
-유저 방 생성
+유저 방 생성 - 방을 생성하면 생성한 사람은 참가자로 자동 참석 됩니다.
 ---
 tags:
   - name: "[dev] User Create Room"
@@ -56,8 +56,12 @@ responses:
             data:
               type: object
               properties:
-                access_token:
+                running_id:
+                  type: integer
+                  description: 해당되는 running_id
+                invite_code:
                   type: string
+                  description: private 에 경우 생성되는 초대코드, private의 경우 방 참가시 해당 code 가 필요함
             meta:
               type: object
               properties:

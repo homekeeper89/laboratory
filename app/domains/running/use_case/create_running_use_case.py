@@ -15,7 +15,7 @@ class CreateRunningUseCase:
             if not self.__validate_config(dto.mode, dto.config):
                 raise AssertionError(f"wrong_mode: {dto.mode}")
 
-            self.__has_user_ready_running(dto.user_id)
+            self.__is_user_valid_status(dto.user_id)
 
             invite_code = self.__make_invite_code(dto.category)
             running_id = self.__running_repo.create_running(
@@ -33,12 +33,8 @@ class CreateRunningUseCase:
             "meta": {"category": dto.category, "mode": dto.mode},
         }
 
-    def __has_user_ready_running(self, user_id: int):
-        invalid_status_list = [
-            RunningStatusEnum.WAITING,
-            RunningStatusEnum.ATTENDING,
-            RunningStatusEnum.IN_PROGRESS,
-        ]
+    def __is_user_valid_status(self, user_id: int):
+        invalid_status_list = RunningStatusEnum.get_invalid_status()
         record = self.__running_repo.get_records_by_user_id(user_id, invalid_status_list)
         if record:
             raise AlreadyStatusException

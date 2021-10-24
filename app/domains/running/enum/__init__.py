@@ -1,18 +1,35 @@
+from typing import List
 from app.base.base_enum import BaseEnum
 from enum import auto
+
+
+class RunningParticipantEnum(BaseEnum):
+    """
+    running 참가자들의 상태
+    대기 > 진행 > 일시정지 > (중도 이탈, 완주)
+    """
+
+    WAITING = auto()
+    IN_PROGRESS = auto()
+    PAUSE = auto()
+    DROP_OUT = auto()
+    FINISH = auto()
 
 
 class RunningStatusEnum(BaseEnum):
     """
     running 의 상태,
-    대기 > 참가 > 진행 > 종료
+    참가 > 진행 > 종료
     기본 상태는 대기이며 유저는 1개의 대기만 가질 수 있다.
     """
 
-    WAITING = auto()
     ATTENDING = auto()
     IN_PROGRESS = auto()
     TERMINATED = auto()
+
+    @classmethod
+    def get_invalid_status(cls) -> List:
+        return [cls.IN_PROGRESS, cls.ATTENDING]
 
 
 class RunningCategoryEnum(BaseEnum):
