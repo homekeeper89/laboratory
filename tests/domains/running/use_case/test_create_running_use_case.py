@@ -8,7 +8,7 @@ from app.domains.running.enum import (
     RunningStatusEnum,
 )
 from app.core.database.models import Running, RunningParticipant, RunningConfig
-from app.core.exceptions import AlreadyStatusException
+from app.core.exceptions import InvalidStatusException
 
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_create_running_with_invalid_status_should_raise(session, status):
     session.commit()
 
     uc = CreateRunningUseCase()
-    with pytest.raises(AlreadyStatusException):
+    with pytest.raises(InvalidStatusException):
         uc._CreateRunningUseCase__is_user_valid_status(user_id)
 
 

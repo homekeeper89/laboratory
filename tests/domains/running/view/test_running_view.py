@@ -2,8 +2,17 @@ import json
 import pytest
 
 
+def test_join_room_should_return_success(session, test_client, get_json_headers):
+    running_id = 1234
+    endpoint = f"/api/running/v1/participation"
+
+    data = {"running_id": running_id}
+    res = test_client.post(endpoint, data=json.dumps(data), headers=get_json_headers)
+    assert res.status_code == 200
+
+
 def test_create_room_should_return_running_id(session, test_client, get_json_headers):
-    endpoint = "/api/running/v1/room"
+    endpoint = "/api/running/v1"
     data = {
         "category": "private",  # open
         "mode": "competition",  # free
