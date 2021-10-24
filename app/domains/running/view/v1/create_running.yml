@@ -11,7 +11,7 @@ requestBody:
         properties:
           category:
             type: string
-            enum: [private, open]
+            enum: [private, public]
             description: 러닝 종류 결정, private 의 경우 invite_code 필요
           mode:
             type: string
