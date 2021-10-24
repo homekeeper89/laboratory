@@ -13,8 +13,8 @@ def temp_ping():
 
 
 @main_api.route("/user/v1/token", methods=["POST"])
-@swag_from("create_token.yml")
 @decorator_http_response(200)
+@swag_from("create_token.yml")
 def create_token():
     data = request.json
     category = data.get("category")

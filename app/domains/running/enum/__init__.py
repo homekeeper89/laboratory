@@ -34,7 +34,7 @@ class RunningStatusEnum(BaseEnum):
 
 class RunningCategoryEnum(BaseEnum):
     """
-    방 종류 결정, 이를 바탕으로 public 여부가 결정됨
+    방 종류 결정, 이를 바탕으로 public 여부가 결정됨, invite_code 사용유무
     """
 
     PRIVATE = auto()

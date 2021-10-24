@@ -24,15 +24,14 @@ def test_private_running_with_none_code_should_return_fail(session):
 
 
 def test_uc_should_make_record(session):
-    session.add(
-        Running(user_id=1234, status=RunningStatusEnum.ATTENDING, category="cat", mode="mode")
-    )
+    model = Running(user_id=1234, status=RunningStatusEnum.ATTENDING, category="FREE", mode="mode")
+    session.add(model)
     session.commit()
+    session.refresh(model)
 
-    running_id = 1
+    running_id = model.id
     uc = ParticipateRunningUseCase()
     uc.execute(running_id, 1234)
-
     res = (
         session.query(RunningParticipant)
         .filter(RunningParticipant.running_id == running_id)

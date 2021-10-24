@@ -8,8 +8,8 @@ from app.core.decorator import decorator_http_response
 
 
 @main_api.route("/running/v1/participation", methods=["POST"])
-@swag_from("participate_running.yml")
 @decorator_http_response(200)
+@swag_from("participate_running.yml")
 def participate_running():
     data = request.json
     # TODO request validation 만들어야함
@@ -20,8 +20,8 @@ def participate_running():
 
 
 @main_api.route("/running/v1", methods=["POST"])
-@swag_from("create_running.yml")
 @decorator_http_response(200)
+@swag_from("create_running.yml")
 def create_running():
     data = request.json
     # TODO request validation 만들어야함
