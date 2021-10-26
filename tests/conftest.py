@@ -2,6 +2,9 @@ import pytest
 from app import create_app, socketio
 from app.core.database import db as _db
 
+from tests.seeder import MODEL_FACTORIES
+from pytest_factoryboy import register
+
 
 @pytest.fixture(scope="session")
 def app():
@@ -34,11 +37,26 @@ def session(db):
     options = dict(bind=connection, binds={})
     session = db.create_scoped_session(options=options)
     db.session = session  # 1번 상황을 위한 세팅
-
+    set_factories_session(session)
     yield session  # 2번 상황을 위한 세팅
     transaction.rollback()
     connection.close()
     session.remove()
+
+
+def register_factories():
+    # 예시) register(StoreFactory) 이런 형태
+    for factory in MODEL_FACTORIES:
+        register(factory)
+
+
+register_factories()
+
+
+def set_factories_session(session):
+    # 예시) UserFactory._meta.sqlalchemy_session = session
+    for factory in MODEL_FACTORIES:
+        factory._meta.sqlalchemy_session = session
 
 
 @pytest.fixture(scope="session")
