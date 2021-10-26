@@ -1,4 +1,4 @@
-from app.core.database.models import Running
+from app.core.database.models import Running, RunningParticipant
 
 
 def test_running_should_make_record(session, running_factory):
@@ -15,3 +15,9 @@ def test_running_should_make_record(session, running_factory):
     cnt = session.query(Running).count()
 
     assert cnt >= 10
+
+
+def test_parameters_should_work(session, running_participant_factory):
+    running_participant_factory.create_batch(10, running_id=1234, status=10)
+    res = session.query(RunningParticipant).filter(RunningParticipant.running_id == 1234).all()
+    assert len(res) == 10
