@@ -1,7 +1,6 @@
 import pytest
 from app import create_app, socketio
 from app.core.database import db as _db
-
 from tests.seeder import MODEL_FACTORIES
 from pytest_factoryboy import register
 
@@ -25,23 +24,14 @@ def db(app):
     _db.drop_all()
 
 
-from app.core.database.models import Running
-
-
 @pytest.fixture(scope="function")
 def session(db):
     """Creates a new database session for each test, rolling back changes afterwards"""
-    connection = db.engine.connect()
-    transaction = connection.begin()
-
-    options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
-    db.session = session  # 1번 상황을 위한 세팅
-    set_factories_session(session)
-    yield session  # 2번 상황을 위한 세팅
-    transaction.rollback()
-    connection.close()
-    session.remove()
+    set_factories_session(db.session)
+    yield db.session
+    db.session.rollback()
+    db.session.close()
+    db.session.remove()
 
 
 def register_factories():

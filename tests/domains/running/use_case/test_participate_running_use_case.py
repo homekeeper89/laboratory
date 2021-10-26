@@ -2,6 +2,23 @@ from app.domains.running.use_case.participate_running_use_case import Participat
 import pytest
 from app.domains.running.enum import RunningStatusEnum
 from app.core.database.models import Running, RunningParticipant
+from tests.seeder import RunningFactory
+
+
+def test_over_limit_user_counts_should_return_fail(
+    session, running_factory: RunningFactory, running_participant_factory
+):
+    running_id = 1234
+    users = 4
+    invite_code = "111"
+    running_factory.create(
+        id=running_id, status=RunningStatusEnum.ATTENDING.name, invite_code=invite_code
+    )
+    running_participant_factory.create_batch(users, running_id=running_id)
+
+    uc = ParticipateRunningUseCase()
+    res = uc.execute(running_id, 1234, invite_code)
+    assert res["error"]
 
 
 def test_private_running_with_none_code_should_return_fail(session):
