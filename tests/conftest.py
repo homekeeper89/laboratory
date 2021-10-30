@@ -2,10 +2,8 @@ import pytest
 from app import create_app, socketio
 from app.core.database import db as _db
 from tests.seeder import MODEL_FACTORIES
-from tests.seeder.domain_factory import DOMAIN_FACTORIES
+from tests.seeder.conftest import running_domain_factory
 from pytest_factoryboy import register
-
-MODEL_FACTORIES.extend(DOMAIN_FACTORIES)
 
 
 @pytest.fixture(scope="session")
