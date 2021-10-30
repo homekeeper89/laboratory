@@ -2,7 +2,10 @@ import pytest
 from app import create_app, socketio
 from app.core.database import db as _db
 from tests.seeder import MODEL_FACTORIES
+from tests.seeder.domain_factory import DOMAIN_FACTORIES
 from pytest_factoryboy import register
+
+MODEL_FACTORIES.extend(DOMAIN_FACTORIES)
 
 
 @pytest.fixture(scope="session")
@@ -47,6 +50,21 @@ def set_factories_session(session):
     # 예시) UserFactory._meta.sqlalchemy_session = session
     for factory in MODEL_FACTORIES:
         factory._meta.sqlalchemy_session = session
+
+
+@pytest.fixture(scope="function")
+def factory_session(session):
+    def _factory_session(factory):
+        nonlocal session
+        try:
+            len(factory)
+            session.add_all(factory)
+        except TypeError:
+            session.add(factory)
+        session.commit()
+        return factory
+
+    return _factory_session
 
 
 @pytest.fixture(scope="session")

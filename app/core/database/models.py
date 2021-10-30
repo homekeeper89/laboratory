@@ -57,7 +57,6 @@ class Running(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")
 
-
 class UserRunningHistory(db.Model):
     __tablename__ = "user_running_histories"
 
