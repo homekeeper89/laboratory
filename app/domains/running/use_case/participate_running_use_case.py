@@ -4,7 +4,8 @@ from app.core.exceptions import FailUseCaseLogicException, RepoException, NotFou
 
 
 class ParticipateRunningUseCase:
-    # TODO 인원제한 확인 로직 추가
+    LIMIT_USER_COUNTS = 4
+
     def __init__(self):
         self.__running_repo = RunningRepository()
 
@@ -14,6 +15,11 @@ class ParticipateRunningUseCase:
             if not running:
                 raise NotFoundException(msg=f"running_id: {running_id}")
             self.__is_valid_status(running, invite_code)
+
+            participates = self.__running_repo.get_user_counts(running_id)
+            if participates >= self.LIMIT_USER_COUNTS:
+                raise FailUseCaseLogicException(msg=f"over_user_counts now:{participates}")
+
             self.__running_repo.create_running_participant(running_id, user_id)
         except RepoException as re:
             return {"error": re, "desc": f"running: {running_id} user_id: {user_id}"}

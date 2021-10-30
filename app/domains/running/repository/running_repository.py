@@ -7,6 +7,17 @@ from typing import List
 
 
 class RunningRepository:
+    def get_user_counts(self, running_id: int) -> int:
+        try:
+            return (
+                session.query(RunningParticipant)
+                .filter(RunningParticipant.running_id == running_id)
+                .count()
+            )
+        except Exception as e:
+            print(e)
+            raise RepoException(msg="unexpected_error_occur")
+
     def get_record_by_id(self, running_id: int):
         try:
             return session.query(Running).filter(Running.id == running_id).first()
