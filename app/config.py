@@ -9,6 +9,7 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = os.getenv("SECRET_KEY", "SECRET")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "JWT-SECRET")
+    JWT_ACCESS_TOKEN_EXPIRES = 60 * 60 * 12  # 12시간
 
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "SQLALCHEMY_DATABASE_URI", "mysql+mysqlconnector://root:root@my_sql:5678/local_dev"
@@ -16,9 +17,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
 
-    POLICY = {
-        "LIMIT_USER_COUNTS":4
-    }
+    POLICY = {"LIMIT_USER_COUNTS": 4}
 
 
 class ProductionConfig(Config):
