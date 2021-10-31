@@ -1,5 +1,5 @@
 from app.core.database import session
-from app.core.database.models import Running, RunningConfig, RunningParticipant
+from app.core.database.models import Running, RunningConfig, RunningParticipant, User
 from app.core.exceptions import RepoException
 from app.domains.running.enum import RunningStatusEnum, RunningParticipantEnum
 from app.domains.running.dto import RunningConfigData
@@ -7,25 +7,29 @@ from typing import List
 
 
 class RunningRepository:
-    def get_user_counts(self, running_id: int) -> int:
+    def get_running_with_users(
+        self, running_id: int, status: str = RunningStatusEnum.ATTENDING.name
+    ):
         try:
             return (
-                session.query(RunningParticipant)
-                .filter(RunningParticipant.running_id == running_id)
-                .count()
+                session.query(RunningParticipant, Running, User)
+                .join(Running, RunningParticipant.running_id == Running.id)
+                .join(User, RunningParticipant.user_id == User.id)
+                .filter(Running.status == status)
+                .all()
             )
         except Exception as e:
             print(e)
             raise RepoException(msg="unexpected_error_occur")
 
-    def get_record_by_id(self, running_id: int):
+    def get_running_record_by_id(self, running_id: int):
         try:
             return session.query(Running).filter(Running.id == running_id).first()
         except Exception as e:
             print(e)
             raise RepoException(msg="unexpected_error_occur")
 
-    def get_records_by_user_id(self, user_id: int, status_list: List[str]):
+    def get_running_records_by_user_id(self, user_id: int, status_list: List[str]):
         try:
             return (
                 session.query(Running)
