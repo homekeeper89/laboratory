@@ -1,6 +1,9 @@
 import pytest
 from app import create_app, socketio
 from app.core.database import db as _db
+from tests.seeder import MODEL_FACTORIES
+from tests.seeder.conftest import running_domain_factory
+from pytest_factoryboy import register
 
 
 @pytest.fixture(scope="session")
@@ -22,23 +25,44 @@ def db(app):
     _db.drop_all()
 
 
-from app.core.database.models import Running
-
-
 @pytest.fixture(scope="function")
 def session(db):
     """Creates a new database session for each test, rolling back changes afterwards"""
-    connection = db.engine.connect()
-    transaction = connection.begin()
+    set_factories_session(db.session)
+    yield db.session
+    db.session.rollback()
+    db.session.close()
+    db.session.remove()
 
-    options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
-    db.session = session  # 1번 상황을 위한 세팅
 
-    yield session  # 2번 상황을 위한 세팅
-    transaction.rollback()
-    connection.close()
-    session.remove()
+def register_factories():
+    # 예시) register(StoreFactory) 이런 형태
+    for factory in MODEL_FACTORIES:
+        register(factory)
+
+
+register_factories()
+
+
+def set_factories_session(session):
+    # 예시) UserFactory._meta.sqlalchemy_session = session
+    for factory in MODEL_FACTORIES:
+        factory._meta.sqlalchemy_session = session
+
+
+@pytest.fixture(scope="function")
+def factory_session(session):
+    def _factory_session(factory):
+        nonlocal session
+        try:
+            len(factory)
+            session.add_all(factory)
+        except TypeError:
+            session.add(factory)
+        session.commit()
+        return factory
+
+    return _factory_session
 
 
 @pytest.fixture(scope="session")

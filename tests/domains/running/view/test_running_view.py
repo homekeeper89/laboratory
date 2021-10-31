@@ -3,6 +3,16 @@ from app.core.database.models import Running
 from app.domains.running.enum import RunningStatusEnum
 
 
+def test_get_running_info_with_not_joined_user_should_return_409(
+    session, test_client, running_domain_factory
+):
+    running = running_domain_factory(4)
+    endpoint = f"/api/running/v1/{running.id}"
+    res = test_client.get(endpoint)
+
+    assert res.status_code == 409
+
+
 def test_invalid_running_should_return_409(session, test_client, get_json_headers):
     session.add(
         Running(user_id=1234, status=RunningStatusEnum.IN_PROGRESS, category="cat", mode="mode")

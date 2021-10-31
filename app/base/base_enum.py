@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 
 class BaseEnum(str, Enum):
@@ -10,3 +11,7 @@ class BaseEnum(str, Enum):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_names(cls) -> List:
+        return [enum.name for enum in cls]

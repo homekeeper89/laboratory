@@ -4,6 +4,18 @@ from app.domains.running.enum import RunningStatusEnum
 from app.core.database.models import Running, RunningParticipant
 
 
+def test_over_limit_user_counts_should_return_fail(
+    session, factory_session, running_domain_factory
+):
+    invite_code = "111"
+    user_id = 1122
+    running = running_domain_factory(4)
+
+    uc = ParticipateRunningUseCase()
+    res = uc.execute(running.id, user_id, invite_code)
+    assert res["error"]
+
+
 def test_private_running_with_none_code_should_return_fail(session):
     code = "code"
     session.add(
