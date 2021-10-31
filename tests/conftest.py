@@ -4,6 +4,7 @@ from app.core.database import db as _db
 from tests.seeder import MODEL_FACTORIES
 from tests.seeder.conftest import running_domain_factory
 from pytest_factoryboy import register
+from flask_jwt_extended import create_access_token
 
 
 @pytest.fixture(scope="session")
@@ -79,6 +80,14 @@ def test_client(app):
 @pytest.fixture(scope="session")
 def get_json_headers():
     return {"Content-Type": "application/json"}
+
+
+@pytest.fixture(scope="function")
+def get_jwt_token(app):
+    def _get_jwt_token(user_id: int):
+        return create_access_token(identity=user_id)
+
+    return _get_jwt_token
 
 
 @pytest.fixture

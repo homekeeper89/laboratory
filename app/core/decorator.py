@@ -1,7 +1,7 @@
 from functools import wraps
 
-# 파라메터 있는 데코레이터에도 @wraps 붙여주고
-def decorator_http_response(status_code: int = 200):
+
+def make_http_response(status_code: int = 200):
     def wrapper(func):
         @wraps(func)
         def decorator(*args, **kwargs):

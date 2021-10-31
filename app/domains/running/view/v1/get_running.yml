@@ -2,6 +2,8 @@
 ---
 tags:
   - name: "Running"
+security:
+  - userAuth: []
 parameters:
   - name: running_id
     in: path

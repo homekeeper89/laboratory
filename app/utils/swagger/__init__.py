@@ -1,5 +1,6 @@
 from flask import current_app
 from .schema.socket import data
+
 TITLE = "RUN WITH ME"
 
 
@@ -25,6 +26,14 @@ def get_swagger_config() -> dict:
             "headers": [],
             "components": {
                 "schemas": data,
+                "securitySchemes": {
+                    "userAuth": {
+                        "type": "http",
+                        "scheme": "bearer",
+                        "bearerFormat": "JWT",
+                        "description": "user jwt token 사용",
+                    },
+                },
             },
         },
         "template": {

@@ -14,7 +14,7 @@ class ValidateAccessTokenUseCase:
     def execute(self, category: str, token: str):
         social_helper = self.__get_helper(category, token)
         try:
-            user_data = social_helper.parsing_data()
+            user_data = social_helper.parsing_primary_data()
             token = create_access_token(identity=user_data)
         except ThirdPartyCommunicationException as ure:
             print(f"{ure.msg}")
