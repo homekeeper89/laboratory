@@ -11,18 +11,18 @@ from flask_jwt_extended import get_jwt_identity
 
 
 @main_api.route("/running/v1/<int:running_id>")
+@jwt_required()
 @make_http_response(200)
 @swag_from("get_running.yml")
-@jwt_required()
 def get_running(running_id: int):
     user_id = get_jwt_identity()
     return GetParticipantsUseCase().execute(running_id, user_id)
 
 
 @main_api.route("/running/v1/participation", methods=["POST"])
+@jwt_required()
 @make_http_response(200)
 @swag_from("participate_running.yml")
-@jwt_required()
 def participate_running():
     data = request.json
     # TODO request validation 만들어야함
@@ -33,9 +33,9 @@ def participate_running():
 
 
 @main_api.route("/running/v1", methods=["POST"])
+@jwt_required()
 @make_http_response(200)
 @swag_from("create_running.yml")
-@jwt_required()
 def create_running():
     data = request.json
     # TODO request validation 만들어야함

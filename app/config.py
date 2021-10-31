@@ -30,12 +30,16 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
 
+    DEV_ACCESS_TOKEN = "super_power_token"
+
 
 class TestConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "test"
     TESTING = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+
+    DEV_ACCESS_TOKEN = "super_power_token_test"
 
 
 config = {"test": TestConfig, "dev": DevelopmentConfig, "prod": ProductionConfig}

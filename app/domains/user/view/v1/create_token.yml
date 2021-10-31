@@ -11,11 +11,20 @@ requestBody:
         properties:
           category:
             type: string
-            enum: [kakao, apple]
+            enum: [kakao, apple, dev_test_env]
             description: 소셜 로그인 종류
           access_token:
             type: string
             description: 소셜 로그인 프로바이더로부터 획득한 token
+      examples: # Multiple examples
+        kakao: # Distinct name
+          value:
+            access_token: 카카오가 준 token
+            category: kakao
+        테스트용: # Distinct name
+          value:
+            access_token: 노션에 공유된 token
+            category: dev_test_env
 responses:
   200:
     description: 성공

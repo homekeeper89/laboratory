@@ -2,6 +2,8 @@
 ---
 tags:
   - name: "Running"
+security:
+  - userAuth: []
 requestBody:
   required: true
   content:
