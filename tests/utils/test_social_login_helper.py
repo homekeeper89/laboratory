@@ -8,7 +8,7 @@ def test_parsing_wrong_data_should_raise(requests_mock):
     with pytest.raises(UnexpectedDataException):
         token = "some_token"
         kcs = KakaoLoginHelper("kakao", token)
-        kcs.parsing_data()
+        kcs.parsing_primary_data()
 
 
 def test_parsing_data_should_work(requests_mock, sample_kakao_data):
@@ -16,7 +16,7 @@ def test_parsing_data_should_work(requests_mock, sample_kakao_data):
     category = "kakao"
     token = "some_token"
     kcs = KakaoLoginHelper(category, token)
-    res = kcs.parsing_data()
+    res = kcs.parsing_primary_data()
     assert res == sample_kakao_data["id"]
 
 
