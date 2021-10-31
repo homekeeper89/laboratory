@@ -1,5 +1,11 @@
 from app.domains.running.use_case.get_participants_use_case import GetParticipantsUseCase
 
+def test_not_joined_user_should_return_error_res(session, running_domain_factory):
+    running = running_domain_factory(4)
+
+    uc = GetParticipantsUseCase()
+    res = uc.execute(running.id, 112233)
+    assert res["error"]
 
 def test_use_case_with_no_user_should_return_error_res():
     uc = GetParticipantsUseCase()
