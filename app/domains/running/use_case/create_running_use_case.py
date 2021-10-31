@@ -35,7 +35,7 @@ class CreateRunningUseCase:
 
     def __is_user_valid_status(self, user_id: int):
         invalid_status_list = RunningStatusEnum.get_invalid_status()
-        record = self.__running_repo.get_records_by_user_id(user_id, invalid_status_list)
+        record = self.__running_repo.get_running_records_by_user_id(user_id, invalid_status_list)
         if record:
             raise FailUseCaseLogicException
 

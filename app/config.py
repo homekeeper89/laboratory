@@ -16,6 +16,10 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
 
+    POLICY = {
+        "LIMIT_USER_COUNTS":4
+    }
+
 
 class ProductionConfig(Config):
     ENV = os.environ.get("FLASK_ENV") or "prod"
