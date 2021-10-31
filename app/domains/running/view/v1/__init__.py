@@ -4,7 +4,16 @@ from flasgger import swag_from
 from app.domains.running.use_case.create_running_use_case import CreateRunningUseCase
 from app.domains.running.dto import CreateRunningData
 from app.domains.running.use_case.participate_running_use_case import ParticipateRunningUseCase
+from app.domains.running.use_case.get_participants_use_case import GetParticipantsUseCase
 from app.core.decorator import decorator_http_response
+
+
+@main_api.route("/running/v1/<int:running_id>")
+@decorator_http_response(200)
+@swag_from("get_running.yml")
+def get_running(running_id: int):
+    user_id = 1234
+    return GetParticipantsUseCase().execute(running_id, user_id)
 
 
 @main_api.route("/running/v1/participation", methods=["POST"])
