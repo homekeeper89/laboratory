@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# pytest-watch
+.testmondata
+
+# vscode settings
+.vscode/
+
+# env
+.env.*

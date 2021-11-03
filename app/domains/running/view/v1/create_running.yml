@@ -1,0 +1,85 @@
+러닝 생성 - 러닝을 생성하면 생성한 사람은 참가자로 자동 참석 됩니다.
+---
+tags:
+  - name: "Running"
+security:
+  - userAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          category:
+            type: string
+            enum: [private, public]
+            description: 러닝 종류 결정, private 의 경우 invite_code 필요
+          mode:
+            type: string
+            enum: [competition, free]
+            description: 경쟁 & 자유 설정, 해당 모드에 따른 config 값이 다름
+          config:
+            type: object
+            properties:
+              distance:
+                type: integer
+                description: 경쟁 모드에서 설정됨, 달려야할 거리, 단위:미터
+              limit_minutes:
+                type: integer
+                description: 자유 모드에서 설정됨, 같이 달릴 시간, 단위:분
+              limit_user_counts:
+                type: integer
+                description: 자유 모드에서 설정됨, 방에 참여할 최대 인원
+      examples: # Multiple examples
+        competition: # Distinct name
+          value:
+            category: private
+            mode: competition
+            config:
+              distance: 10
+              limit_minutes: 0
+              limit_user_counts: 0
+        free: # Distinct name
+          value:
+            category: open
+            mode: free
+            config:
+              distance: 0
+              limit_minutes: 100
+              limit_user_counts: 5
+responses:
+  200:
+    description: 성공
+    content:
+      application/json:
+        schema:
+          properties:
+            data:
+              type: object
+              properties:
+                running_id:
+                  type: integer
+                  description: 해당되는 running_id
+                invite_code:
+                  type: string
+                  description: private 에 경우 생성되는 초대코드, private의 경우 방 참가시 해당 code 가 필요함
+            meta:
+              type: object
+              properties:
+                category:
+                  type: string
+                  description: 생성에 성공한 종류
+                mode:
+                  type: string
+                  description: 생성에 성공한 모드
+
+  409:
+    description: mode, config 설정이 잘못됨
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: 실패 사유

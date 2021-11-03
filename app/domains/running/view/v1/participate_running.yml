@@ -1,0 +1,58 @@
+러닝 참가
+---
+tags:
+  - name: "Running"
+security:
+  - userAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          running_id:
+            type: integer
+            description: 참여할 running_id, 러닝 생성시 return 함
+          invite_code:
+            type: string
+            description: private 에 참가하려고 하는 경우 필요한 code
+responses:
+  200:
+    description: 성공
+    content:
+      application/json:
+        schema:
+          properties:
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: success 만 내려감
+            meta:
+              type: object
+  404:
+    description: running_id 가 존재하지 않을때
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명
+  409:
+    description: 비즈니스 로직을 통과하지 못함
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명
