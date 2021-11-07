@@ -27,7 +27,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          FLASK_ENV=testing python -m pytest -x tests/
+          FLASK_ENV=test python -m pytest -x tests/
 
       # 폴더 만드는 스탭
       - name: make artifacts dir
