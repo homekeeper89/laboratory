@@ -18,13 +18,15 @@ def test_get_running_info_with_not_joined_user_should_return_409(
     assert res.status_code == 409
 
 
-def test_invalid_running_should_return_409(session, test_client, get_json_headers):
+def test_invalid_running_should_return_409(session, test_client, get_json_headers, get_jwt_token):
     session.add(
         Running(user_id=1234, status=RunningStatusEnum.IN_PROGRESS, category="cat", mode="mode")
     )
     session.commit()
     running_id = 1
     endpoint = f"/api/running/v1/participation"
+    token = get_jwt_token(1234)
+    get_json_headers["Authorization"] = f"Bearer {token}"
 
     data = {"running_id": running_id}
     res = test_client.post(endpoint, data=json.dumps(data), headers=get_json_headers)
