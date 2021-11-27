@@ -1,5 +1,9 @@
-build_compose ${env}:
-	docker-compose --env-file .env.${env} up -d
+# TODO env param 으로 받아서 작동하도록 변경
+# build_compose ${env}:
+# 	docker-compose --env-file .env.${env} up -d
+
+build_compose_dev:
+	docker-compose --env-file .env.dev up -d
 
 build_app:
 	docker build -t app ./app
