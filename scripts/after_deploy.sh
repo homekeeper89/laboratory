@@ -8,6 +8,6 @@ echo "Delete image"
 docker rmi $(docker images | grep 'run_with_me')
 
 echo "Build image dev"
-docker-compose --env-file .env.dev up -d
+docker-compose --env-file ../.env.dev up -d
 
 echo "Done"
