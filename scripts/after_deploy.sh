@@ -6,10 +6,10 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=run_with_me --format
 echo "Delete image"
 docker rmi $(docker images | grep 'run_with_me')
 
-echo "print dir"
-pwd
+echo "move cursor"
+cd /home/ec2-user
 
 echo "Build image dev"
-docker-compose --env-file ../.env.dev up -d
+docker-compose --env-file .env.dev up -d
 
 echo "Done"
