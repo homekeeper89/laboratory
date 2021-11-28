@@ -5,9 +5,21 @@ from app.domains.running.use_case.create_running_use_case import CreateRunningUs
 from app.domains.running.dto import CreateRunningData
 from app.domains.running.use_case.participate_running_use_case import ParticipateRunningUseCase
 from app.domains.running.use_case.get_participants_use_case import GetParticipantsUseCase
+from app.domains.running.enum import RunningCategoryEnum
 from app.core.decorator import make_http_response
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
+from app.core.exceptions import InvalidRequestException
+
+
+@main_api.route("/running/v1/<string:category>")
+@jwt_required()
+@make_http_response(200)
+def get_runnings(category: str):
+    user_id = get_jwt_identity()
+    if not RunningCategoryEnum.has_value(category):
+        return {"error": InvalidRequestException, "desc": f"category: {category}"}
+    return {}
 
 
 @main_api.route("/running/v1/<int:running_id>")

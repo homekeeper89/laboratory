@@ -1,6 +1,31 @@
 import json
 from app.core.database.models import Running
-from app.domains.running.enum import RunningStatusEnum
+from app.domains.running.enum import RunningCategoryEnum, RunningStatusEnum
+
+
+def test_get_rooms_with_wrong_category_should_return_400(
+    session, get_token_headers, test_client, running_domain_factory
+):
+    headers = get_token_headers(1234)
+    running_category = "wrong"
+    endpoint = f"/api/running/v1/{running_category}"
+
+    res = test_client.get(endpoint, headers=headers)
+    assert res.status_code == 400
+
+
+def test_get_rooms_should_return_200(
+    session, get_token_headers, test_client, running_domain_factory
+):
+    headers = get_token_headers(1234)
+    running_category = RunningCategoryEnum.PRIVATE
+    endpoint = f"/api/running/v1/{running_category}"
+
+    res = test_client.get(endpoint, headers=headers)
+    assert res.status_code == 200
+    data = res.json["data"]
+
+    assert data
 
 
 def test_get_running_info_with_not_joined_user_should_return_409(
@@ -18,43 +43,42 @@ def test_get_running_info_with_not_joined_user_should_return_409(
     assert res.status_code == 409
 
 
-def test_invalid_running_should_return_409(session, test_client, get_json_headers, get_jwt_token):
+def test_invalid_running_should_return_409(session, test_client, get_token_headers, get_jwt_token):
     session.add(
         Running(user_id=1234, status=RunningStatusEnum.IN_PROGRESS, category="cat", mode="mode")
     )
     session.commit()
     running_id = 1
     endpoint = f"/api/running/v1/participation"
-    token = get_jwt_token(1234)
-    get_json_headers["Authorization"] = f"Bearer {token}"
+    headers = get_token_headers(1234)
 
     data = {"running_id": running_id}
-    res = test_client.post(endpoint, data=json.dumps(data), headers=get_json_headers)
+    res = test_client.post(endpoint, data=json.dumps(data), headers=headers)
     assert res.status_code == 409
 
 
-def test_none_running_should_return_404(session, test_client, get_json_headers, get_jwt_token):
+def test_none_running_should_return_404(session, test_client, get_token_headers, get_jwt_token):
     running_id = 1234
     endpoint = f"/api/running/v1/participation"
-    token = get_jwt_token(1234)
-    get_json_headers["Authorization"] = f"Bearer {token}"
+    headers = get_token_headers(1234)
 
     data = {"running_id": running_id}
-    res = test_client.post(endpoint, data=json.dumps(data), headers=get_json_headers)
+    res = test_client.post(endpoint, data=json.dumps(data), headers=headers)
     assert res.status_code == 404
 
 
-def test_create_room_should_return_running_id(session, test_client, get_json_headers, get_jwt_token):
+def test_create_room_should_return_running_id(
+    session, test_client, get_token_headers, get_jwt_token
+):
     endpoint = "/api/running/v1"
     data = {
         "category": "private",  # open
         "mode": "competition",  # free
         "config": {"distance": 123},
     }
-    token = get_jwt_token(1234)
-    get_json_headers["Authorization"] = f"Bearer {token}"
+    headers = get_token_headers(1234)
 
-    res = test_client.post(endpoint, data=json.dumps(data), headers=get_json_headers)
+    res = test_client.post(endpoint, data=json.dumps(data), headers=headers)
 
     assert res.status_code == 200
     data = res.json["data"]

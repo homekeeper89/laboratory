@@ -6,6 +6,11 @@ class BaseCustomException(Exception):
         return self.msg
 
 
+class InvalidRequestException(BaseCustomException):
+    HTTP_CODE = 400
+    ERROR = "invalid_request check_swagger_or_api_docs"
+
+
 class ThirdPartyCommunicationException(BaseCustomException):
     HTTP_CODE = 409
     ERROR = "fail_communicate_with_out_service"

@@ -77,17 +77,27 @@ def test_client(app):
     return app.test_client()
 
 
-@pytest.fixture(scope="session")
-def get_json_headers():
-    return {"Content-Type": "application/json"}
-
-
 @pytest.fixture(scope="function")
 def get_jwt_token(app):
     def _get_jwt_token(user_id: int):
         return create_access_token(identity=user_id)
 
     return _get_jwt_token
+
+
+@pytest.fixture(scope="session")
+def get_token_headers():
+    def _get_token_headers(user_id: int):
+        token = create_access_token(identity=user_id)
+
+        return {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+
+    return _get_token_headers
+
+
+@pytest.fixture(scope="session")
+def get_json_headers():
+    return {"Content-Type": "application/json"}
 
 
 @pytest.fixture
