@@ -17,7 +17,7 @@ class RunningRepository:
             return (
                 session.query(Running, RunningConfig)
                 .join(RunningConfig, Running.id == RunningConfig.running_id)
-                .filter(Running.mode == mode)
+                .filter(Running.mode == mode.upper())
                 .filter(Running.category == RunningCategoryEnum.PUBLIC)
                 .limit(offset)
                 .all()

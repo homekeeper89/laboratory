@@ -1,27 +1,32 @@
 import json
 from app.core.database.models import Running
-from app.domains.running.enum import RunningCategoryEnum, RunningStatusEnum
+from app.domains.running.enum import RunningStatusEnum, RunningModeEnum, RunningCategoryEnum
 
 
-def test_get_rooms_with_wrong_category_should_return_400(
+def test_get_runnings_with_wrong_category_should_return_400(
     session, get_token_headers, test_client, running_domain_factory
 ):
     headers = get_token_headers(1234)
-    running_category = "wrong"
-    endpoint = f"/api/running/v1/{running_category}"
+    running_mode = "wrong"
+    endpoint = f"/api/running/v1/{running_mode}"
 
     res = test_client.get(endpoint, headers=headers)
     assert res.status_code == 400
 
 
-def test_get_rooms_should_return_200(
+def test_get_runnings_should_return_200(
     session, get_token_headers, test_client, running_domain_factory
 ):
+    running_domain_factory(
+        4, running_mode=RunningModeEnum.COMPETITION, running_category=RunningCategoryEnum.PUBLIC
+    )
     headers = get_token_headers(1234)
-    running_category = RunningCategoryEnum.PRIVATE
-    endpoint = f"/api/running/v1/{running_category}"
+    running_mode = RunningModeEnum.COMPETITION.lower()
+    endpoint = f"/api/running/v1/{running_mode}"
 
-    res = test_client.get(endpoint, headers=headers)
+    data = {"offset": 3}
+
+    res = test_client.get(endpoint, json=data, headers=headers)
     assert res.status_code == 200
     data = res.json["data"]
 
