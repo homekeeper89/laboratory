@@ -16,6 +16,7 @@ from app.domains.running.use_case.get_runnings_use_case import GetRunningsUseCas
 @main_api.route("/running/v1/<string:mode>")
 @jwt_required()
 @make_http_response(200)
+@swag_from("get_runnings.yml")
 def get_runnings(mode: str):
     if not RunningModeEnum.has_value(mode):
         return {"error": InvalidRequestException, "desc": f"category: {mode}"}

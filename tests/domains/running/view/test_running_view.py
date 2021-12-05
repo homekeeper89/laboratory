@@ -29,7 +29,6 @@ def test_get_runnings_should_return_200(
     res = test_client.get(endpoint, json=data, headers=headers)
     assert res.status_code == 200
     data = res.json["data"]
-
     assert data
 
 
