@@ -1,0 +1,60 @@
+[dev] 러닝 목록 조회
+---
+tags:
+  - name: "Running"
+security:
+  - userAuth: []
+parameters:
+  - name: mode
+    in: path
+    required: true
+    description: 러닝 모드 선택(경쟁:competition, 자유:free)
+    schema:
+      type: string
+responses:
+  200:
+    description: 성공
+    content:
+      application/json:
+        schema:
+          properties:
+            data:
+              type: object
+            meta:
+              type: object
+  400:
+    description: request 가 잘못됨, 존재하지 않는 mode
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명
+  404:
+    description: running_id 가 존재하지 않을때
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명
+  409:
+    description: 비즈니스 로직을 통과하지 못함
+    content:
+      application/json:
+        schema:
+          properties:
+            error:
+              type: string
+              description: error 에 대한 기본설명
+            desc:
+              type: string
+              description: error 에 대한 상세설명

@@ -5,9 +5,24 @@ from app.domains.running.use_case.create_running_use_case import CreateRunningUs
 from app.domains.running.dto import CreateRunningData
 from app.domains.running.use_case.participate_running_use_case import ParticipateRunningUseCase
 from app.domains.running.use_case.get_participants_use_case import GetParticipantsUseCase
+from app.domains.running.enum import RunningModeEnum
 from app.core.decorator import make_http_response
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
+from app.core.exceptions import InvalidRequestException
+from app.domains.running.use_case.get_runnings_use_case import GetRunningsUseCase
+
+
+@main_api.route("/running/v1/<string:mode>")
+@jwt_required()
+@make_http_response(200)
+@swag_from("get_runnings.yml")
+def get_runnings(mode: str):
+    if not RunningModeEnum.has_value(mode):
+        return {"error": InvalidRequestException, "desc": f"category: {mode}"}
+    data = request.json
+    offset = data.get("offset", 3)
+    return GetRunningsUseCase().execute(mode, offset)
 
 
 @main_api.route("/running/v1/<int:running_id>")

@@ -30,6 +30,7 @@ flasgger = "^0.9.5"
 requests-mock = "^1.9.3"
 flask-sqlacodegen = "^1.1.8"
 pytest-factoryboy = "^2.1.0"
+jsonschema = "^4.2.1"
 
 [build-system]
 requires = ["poetry>=0.12"]

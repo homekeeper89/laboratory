@@ -48,3 +48,15 @@ class RunningModeEnum(BaseEnum):
 
     COMPETITION = auto()
     FREE = auto()
+
+
+class RunningConfigCategoryEnum(BaseEnum):
+    """
+    TODO : enum 간의 하이라키를 표현할 수 있는 방법?
+    러닝 생성시 mode 에 따른 설정값들
+    COMPETITION 일 경우 DISTANCE 가 설정되어야함
+    """
+
+    DISTANCE = auto()
+    LIMIT_USER_COUNTS = auto()
+    LIMIT_MINUTES = auto()

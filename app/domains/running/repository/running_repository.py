@@ -1,12 +1,31 @@
 from app.core.database import session
 from app.core.database.models import Running, RunningConfig, RunningParticipant, User
 from app.core.exceptions import RepoException
-from app.domains.running.enum import RunningStatusEnum, RunningParticipantEnum
+from app.domains.running.enum import (
+    RunningCategoryEnum,
+    RunningModeEnum,
+    RunningStatusEnum,
+    RunningParticipantEnum,
+)
 from app.domains.running.dto import RunningConfigData
 from typing import List
 
 
 class RunningRepository:
+    def get_runnings_with_mode(self, mode: RunningModeEnum, offset: int = 4):
+        try:
+            return (
+                session.query(Running, RunningConfig)
+                .join(RunningConfig, Running.id == RunningConfig.running_id)
+                .filter(Running.mode == mode.upper())
+                .filter(Running.category == RunningCategoryEnum.PUBLIC)
+                .limit(offset)
+                .all()
+            )
+        except Exception as e:
+            print(e)
+            raise RepoException(msg="unexpected_error_occur")
+
     def get_running_with_users(
         self, running_id: int, status: str = RunningStatusEnum.ATTENDING.name
     ):

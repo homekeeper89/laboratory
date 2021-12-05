@@ -14,4 +14,8 @@ class BaseEnum(str, Enum):
 
     @classmethod
     def get_names(cls) -> List:
-        return [enum.name for enum in cls]
+        return [enum.name.lower() for enum in cls]
+
+    @classmethod
+    def has_value(cls, value) -> bool:
+        return value in cls.get_names()

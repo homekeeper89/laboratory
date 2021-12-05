@@ -1,8 +1,9 @@
 from faker import Factory as FakerFactory
 
 import factory
-from app.core.database.models import Running, RunningParticipant, User
+from app.core.database.models import Running, RunningConfig, RunningParticipant, User
 from app.domains.running.enum import (
+    RunningConfigCategoryEnum,
     RunningStatusEnum,
     RunningModeEnum,
     RunningCategoryEnum,
@@ -48,4 +49,15 @@ class RunningParticipantFactory(factory.alchemy.SQLAlchemyModelFactory):
     )
 
 
-MODEL_FACTORIES = [UserFactory, RunningFactory, RunningParticipantFactory]
+class RunningConfigFactory(factory.alchemy.SQLAlchemyModelFactory):
+    class Meta:
+        model = RunningConfig
+
+    running_id = factory.lazy_attribute(lambda x: faker.random_int(1, 100000))
+    category = factory.lazy_attribute(
+        lambda x: faker.random_element(elements=RunningConfigCategoryEnum.get_names())
+    )
+    value = 10
+
+
+MODEL_FACTORIES = [UserFactory, RunningFactory, RunningParticipantFactory, RunningConfigFactory]

@@ -1,12 +1,8 @@
-# app 실행
+# app 설치
+- .env.dev 값 세팅
+- make build_compose_dev 
+- docker ps 로 확인
 
-- docker-compose up -d
-
-# ping 확인
-
-- http://localhost:8000/ping
-- 또는 make ping_app
 
 # TODO
-- deploy_script 만들기
-- 모든 enum 종류 
+- mysql docker 화
