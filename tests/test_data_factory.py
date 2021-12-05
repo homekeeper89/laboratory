@@ -2,12 +2,11 @@ import pytest
 
 from app.core.database.models import Running, RunningParticipant, User
 
-from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
+from app.domains.running.enum import RunningModeEnum
 from app.core.database.models import Running
 
 
 def test_running_factory_should_make(session, running_domain_factory):
-
     running_domain_factory(4, running_mode=RunningModeEnum.COMPETITION)
 
     res = session.query(Running).all()
