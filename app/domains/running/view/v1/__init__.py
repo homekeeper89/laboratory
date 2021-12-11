@@ -13,6 +13,33 @@ from app.core.exceptions import InvalidRequestException
 from app.domains.running.use_case.get_runnings_use_case import GetRunningsUseCase
 
 
+from pydantic import BaseModel
+from flask_pydantic import validate
+
+
+class QueryModel(BaseModel):
+    age: int
+
+
+class RequestBodyModel(BaseModel):
+    some: str
+    end: str
+
+
+@main_api.route("/running/body_model", methods=["POST"])
+@validate()
+@make_http_response(200)
+def get_body_model(body: RequestBodyModel):
+    return {"data": "success"}
+
+
+@main_api.route("/running/query_model")
+@validate()
+@make_http_response(200)
+def get_query_model(query: QueryModel):
+    return {"data": "success"}
+
+
 @main_api.route("/running/v1/<string:mode>")
 @jwt_required()
 @make_http_response(200)

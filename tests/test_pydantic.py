@@ -1,7 +1,7 @@
 import datetime
 from decimal import Decimal
 from typing import List, NewType, Optional, Set
-
+import json
 from pydantic import BaseModel, Field
 
 PersonId = NewType("PersonId", int)
@@ -21,6 +21,29 @@ class Person(BaseModel):
         # We use the Python attribute 'bank_account',
         # but read/write the JSON 'bankAccount'
         fields = {"bank_account": "bankAccount"}
+
+
+def test_wrong_data_should_match_format(test_client, get_token_headers):
+    data = {"wrong": "keyword"}
+    res = test_client.post(
+        "/api/running/body_model", data=json.dumps(data), headers=get_token_headers(1234)
+    )
+    print(res.json)
+    assert res.status_code == 400
+    assert res.json["error"]
+
+
+def test_body_model_pandatic_should_work(test_client, get_token_headers):
+    data = {"some": "data", "end": "data"}
+    res = test_client.post(
+        "/api/running/body_model", data=json.dumps(data), headers=get_token_headers(1234)
+    )
+    assert res.status_code == 200
+
+
+def test_query_model_pandatic_should_work(test_client):
+    res = test_client.get("/api/running/query_model?age=1")
+    assert res.status_code == 200
 
 
 def test_exclude_should_work():
@@ -56,4 +79,3 @@ def test_two_differ_fields_work():
         matthewPower="name",
     )
     assert diff
-
