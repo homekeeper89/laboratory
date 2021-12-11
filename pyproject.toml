@@ -17,6 +17,7 @@ sqlalchemy = "^1.4.25"
 flask_sqlalchemy = "^2.5.1"
 mysql-connector = "^2.2.9"
 python-dotenv = "^0.19.1"
+Flask-Pydantic = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -31,6 +32,7 @@ requests-mock = "^1.9.3"
 flask-sqlacodegen = "^1.1.8"
 pytest-factoryboy = "^2.1.0"
 jsonschema = "^4.2.1"
+Flask-Pydantic = "^0.9.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
