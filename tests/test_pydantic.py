@@ -28,7 +28,6 @@ def test_wrong_data_should_match_format(test_client, get_token_headers):
     res = test_client.post(
         "/api/running/body_model", data=json.dumps(data), headers=get_token_headers(1234)
     )
-    print(res.json)
     assert res.status_code == 400
     assert res.json["error"]
 

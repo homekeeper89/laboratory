@@ -6,6 +6,7 @@ from .utils.swagger import get_swagger_config
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from app.core.database import db, migrate
+from flask import jsonify
 
 
 socketio = SocketIO()
@@ -31,5 +32,9 @@ def create_app(env: str = "dev") -> Flask:
     def health_check():
         env = os.getenv("FLASK_ENV", "empty")
         return f"env:{env} SUCCESS"
+
+    @app.errorhandler(400)
+    def handle_bad_request(e):
+        return jsonify(error="invalid_request, check_req_fields", desc=e.description), 400
 
     return app
