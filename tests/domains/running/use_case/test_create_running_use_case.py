@@ -1,6 +1,6 @@
 import pytest
 from app.domains.running.use_case.create_running_use_case import CreateRunningUseCase
-from app.domains.running.dto import CreateRunningData, RunningConfigData
+from app.domains.running.schema.v1_schema import RunningConfingSchema, CreateRunningSchema
 from app.domains.running.enum import (
     RunningCategoryEnum,
     RunningModeEnum,
@@ -14,12 +14,12 @@ from app.core.exceptions import FailUseCaseLogicException
 @pytest.mark.parametrize(
     "mode, data, expected",
     [
-        (RunningModeEnum.COMPETITION, RunningConfigData(distance=600), 1),
-        (RunningModeEnum.FREE, RunningConfigData(limit_user_counts=10, limit_minutes=10), 2),
+        (RunningModeEnum.COMPETITION, {"distance": 600}, 1),
+        (RunningModeEnum.FREE, {"limit_user_counts": 10, "limit_minutes": 10}, 2),
     ],
 )
 def test_create_room_should_make_config(session, mode, data, expected):
-    dto = CreateRunningData(user_id=1234, mode=mode, config=data)
+    dto = CreateRunningSchema(user_id=1234, mode=mode, config=data)
     res = CreateRunningUseCase().execute(dto)
     running_id = res["data"]["running_id"]
 
@@ -28,7 +28,7 @@ def test_create_room_should_make_config(session, mode, data, expected):
 
 
 def test_create_room_should_make_join(session):
-    dto = CreateRunningData(user_id=1234, category=RunningCategoryEnum.PUBLIC)
+    dto = CreateRunningSchema(user_id=1234, category=RunningCategoryEnum.PUBLIC)
     CreateRunningUseCase().execute(dto)
 
     res = (
@@ -52,7 +52,7 @@ def test_create_running_with_invalid_status_should_raise(session, status):
 
 
 def test_ready_running_user_should_not_make_running(session):
-    dto = CreateRunningData(user_id=1234, category=RunningCategoryEnum.PUBLIC)
+    dto = CreateRunningSchema(user_id=1234, category=RunningCategoryEnum.PUBLIC)
     CreateRunningUseCase().execute(dto)
 
     uc_res = CreateRunningUseCase().execute(dto)
@@ -60,7 +60,7 @@ def test_ready_running_user_should_not_make_running(session):
 
 
 def test_use_case_with_public_mode_should_not_make_invite_code(session):
-    dto = CreateRunningData(user_id=12345, category=RunningCategoryEnum.PUBLIC)
+    dto = CreateRunningSchema(user_id=12345, category=RunningCategoryEnum.PUBLIC)
     uc_res = CreateRunningUseCase().execute(dto)
 
     res = session.query(Running).filter(Running.user_id == dto.user_id).first()
@@ -69,7 +69,7 @@ def test_use_case_with_public_mode_should_not_make_invite_code(session):
 
 
 def test_use_case_should_make_room_and_status_is_attending(session):
-    dto = CreateRunningData(user_id=1234)
+    dto = CreateRunningSchema(user_id=1234)
     uc_res = CreateRunningUseCase().execute(dto)
 
     res = session.query(Running).filter(Running.user_id == dto.user_id).first()
@@ -81,8 +81,8 @@ def test_use_case_should_make_room_and_status_is_attending(session):
 @pytest.mark.parametrize(
     "mode, config, expected",
     [
-        (RunningModeEnum.COMPETITION, RunningConfigData(distance=123), True),
-        (RunningModeEnum.FREE, RunningConfigData(limit_user_counts=5), True),
+        (RunningModeEnum.COMPETITION, RunningConfingSchema(distance=123), True),
+        (RunningModeEnum.FREE, RunningConfingSchema(limit_user_counts=5), True),
     ],
 )
 def test_validate_mode_should_return_expected(mode, config, expected):

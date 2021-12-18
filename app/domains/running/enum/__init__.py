@@ -1,5 +1,5 @@
 from typing import List
-from app.base.base_enum import BaseEnum
+from app.base.enum import BaseEnum
 from enum import auto
 
 

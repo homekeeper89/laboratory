@@ -8,10 +8,10 @@ PersonId = NewType("PersonId", int)
 
 
 class Person(BaseModel):
-    id: PersonId
-    name: str
-    bank_account: Decimal
-    birthdate: datetime.date
+    id: PersonId = None
+    name: str = None
+    bank_account: Decimal = 10
+    birthdate: datetime.date = datetime.datetime.now()
     friends: Optional[List[PersonId]] = None
     snake_name: str = Field(alias="matthewPower")
 
@@ -21,6 +21,12 @@ class Person(BaseModel):
         # We use the Python attribute 'bank_account',
         # but read/write the JSON 'bankAccount'
         fields = {"bank_account": "bankAccount"}
+
+
+def test_valid_field_should_return():
+    person = Person(name="kk", snake_name="kkk")
+    kk = person.dict(exclude_unset=True)
+    assert not kk.get("bank_account")
 
 
 def test_wrong_data_should_match_format(test_client, get_token_headers):

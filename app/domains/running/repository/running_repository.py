@@ -7,7 +7,6 @@ from app.domains.running.enum import (
     RunningStatusEnum,
     RunningParticipantEnum,
 )
-from app.domains.running.dto import RunningConfigData
 from typing import List
 
 
@@ -77,7 +76,7 @@ class RunningRepository:
         category: str,
         mode: str,
         invite_code: str,
-        config: RunningConfigData,
+        config,
         status: str = RunningStatusEnum.ATTENDING.name,
     ) -> int:
         """
@@ -104,13 +103,10 @@ class RunningRepository:
             session.add(rp_model)
 
             configs = []
-            for field in config.__dataclass_fields__:
-                value = getattr(config, field)
+            config = config.dict(exclude_none=True)
+            for field, value in config.items():
                 category = str(field).upper()
-                if value:
-                    configs.append(
-                        RunningConfig(running_id=model.id, category=category, value=value)
-                    )
+                configs.append(RunningConfig(running_id=model.id, category=category, value=value))
             session.add_all(configs)
             session.commit()
             return model.id

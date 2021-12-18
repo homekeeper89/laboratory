@@ -18,4 +18,7 @@ class BaseEnum(str, Enum):
 
     @classmethod
     def has_value(cls, value) -> bool:
+        if value.upper() in cls.get_names():
+            print("app 내에서의 enum 사용은 무조건 lower case 입니다")
+            return True
         return value in cls.get_names()

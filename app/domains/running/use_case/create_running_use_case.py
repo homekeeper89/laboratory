@@ -1,6 +1,5 @@
 from typing import Optional
 import uuid
-from app.domains.running.dto import CreateRunningData, RunningConfigData
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum, RunningStatusEnum
 from app.domains.running.repository.running_repository import RunningRepository
 from app.core.exceptions import FailUseCaseLogicException
@@ -10,7 +9,7 @@ class CreateRunningUseCase:
     def __init__(self):
         self.__running_repo = RunningRepository()
 
-    def execute(self, dto: CreateRunningData):
+    def execute(self, dto):
         try:
             if not self.__validate_config(dto.mode, dto.config):
                 raise AssertionError(f"wrong_mode: {dto.mode}")
@@ -44,7 +43,7 @@ class CreateRunningUseCase:
             return None
         return str(uuid.uuid4()).split("-")[0]
 
-    def __validate_config(self, mode: str, config: RunningConfigData):
+    def __validate_config(self, mode: str, config):
         res = False
         assert_msg = f"mode_and_config_not_valid mode: {mode}, config: {config}"
         if mode == RunningModeEnum.COMPETITION:
