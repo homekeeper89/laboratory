@@ -4,7 +4,7 @@ import json
 
 from flask_socketio import emit
 from app.domains.running.use_case.calculate_distance_use_case import CalculateDistanceUseCase
-from app.domains.running.dto import CalcDistanceData
+from app.domains.running.dto import CalcDistanceDto
 
 # TODO class-based 로 변경해야함
 def make_response(data: dict, meta: dict, status: int = 200) -> dict:
@@ -49,7 +49,7 @@ def on_room_event(data):
     to_data = tuple(data.get("to_data", [0, 0]))
     distance = data.get("distance", 0)
 
-    dto = CalcDistanceData(from_data=from_data, to_data=to_data, distance=distance)
+    dto = CalcDistanceDto(from_data=from_data, to_data=to_data, distance=distance)
     calc_distance = uc.execute(dto)
     data = {
         "distance": calc_distance,
