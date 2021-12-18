@@ -1,11 +1,11 @@
-from app.domains.running.dto import RunningConfigData
+from app.domains.running.schema.v1_schema import RunningConfingSchema
 from app.domains.running.enum import RunningStatusEnum
 from app.domains.running.repository.running_repository import RunningRepository
 from app.core.database.models import Running, RunningConfig
 
 
 def test_create_record_should_make_record_and_return_id(session):
-    conf = RunningConfigData()
+    conf = RunningConfingSchema()
     conf.distance = None
 
     repo = RunningRepository()
