@@ -29,28 +29,6 @@ def test_valid_field_should_return():
     assert not kk.get("bank_account")
 
 
-def test_wrong_data_should_match_format(test_client, get_token_headers):
-    data = {"wrong": "keyword"}
-    res = test_client.post(
-        "/api/running/body_model", data=json.dumps(data), headers=get_token_headers(1234)
-    )
-    assert res.status_code == 400
-    assert res.json["error"]
-
-
-def test_body_model_pandatic_should_work(test_client, get_token_headers):
-    data = {"some": "data", "end": "data"}
-    res = test_client.post(
-        "/api/running/body_model", data=json.dumps(data), headers=get_token_headers(1234)
-    )
-    assert res.status_code == 200
-
-
-def test_query_model_pandatic_should_work(test_client):
-    res = test_client.get("/api/running/query_model?age=1")
-    assert res.status_code == 200
-
-
 def test_exclude_should_work():
     origin = Person(
         id=1,

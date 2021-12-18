@@ -8,56 +8,12 @@ from app.core.decorator import make_http_response
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 from app.domains.running.use_case.get_runnings_use_case import GetRunningsUseCase
-from flask import abort
 
-from pydantic import BaseModel, ValidationError
 from app.domains.running.schema.v1_schema import (
     CreateParticipationRequestSchema,
     CreateRunningSchema,
     GetRunningsRequestSchema,
 )
-
-
-def validator(original_class):
-    orig_init = original_class.__init__
-    # Make copy of original __init__, so we can call it without recursion
-    def __init__(self, **args):
-        try:
-            orig_init(self, **args)  # Call the original __init__
-        except ValidationError as ve:
-            print(ve)
-            abort(400, ve.errors())
-
-    original_class.__init__ = __init__  # Set the class' __init__ to the new one
-    return original_class
-
-
-@validator
-class BaseRequestModel(BaseModel):
-    pass
-
-
-class QueryModel(BaseModel):
-    age: int
-
-
-class RequestBodyModel(BaseRequestModel):
-    some: str
-    end: str
-
-
-@main_api.route("/running/body_model", methods=["POST"])
-@make_http_response(200)
-def get_body_model():
-    body = RequestBodyModel(**request.json)
-    return {"data": "success"}
-
-
-@main_api.route("/running/query_model")
-@make_http_response(200)
-def get_query_model():
-    kk = QueryModel(**request.args)
-    return {"data": "success"}
 
 
 @main_api.route("/running/v1/<string:mode>")
