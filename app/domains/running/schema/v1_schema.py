@@ -1,4 +1,4 @@
-from app.base.request_schema import BaseRequestModel
+from app.base.request import BaseRequestModel
 from pydantic import Field, validator
 from app.domains.running.enum import RunningCategoryEnum, RunningModeEnum
 

@@ -13,7 +13,8 @@ class Person(BaseModel):
     bank_account: Decimal = 10
     birthdate: datetime.date = datetime.datetime.now()
     friends: Optional[List[PersonId]] = None
-    snake_name: str = Field(alias="matthewPower")
+    snake_name: str = Field(alias="matthewPower", tags=["power_comeon"])
+    _private: str = ""
 
     class Config:
         allow_population_by_field_name = True
@@ -21,6 +22,13 @@ class Person(BaseModel):
         # We use the Python attribute 'bank_account',
         # but read/write the JSON 'bankAccount'
         fields = {"bank_account": "bankAccount"}
+
+
+def test_private_fields_should_return_none():
+    person = Person(name="kk", snake_name="kkk")
+    kk = person.dict()
+
+    assert not hasattr(kk, "_private")
 
 
 def test_valid_field_should_return():

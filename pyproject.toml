@@ -18,6 +18,8 @@ flask_sqlalchemy = "^2.5.1"
 mysql-connector = "^2.2.9"
 python-dotenv = "^0.19.1"
 Flask-Pydantic = "^0.9.0"
+aiohttp = "^3.8.1"
+aiofiles = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
