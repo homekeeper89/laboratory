@@ -57,6 +57,7 @@ class Running(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")
 
+
 class UserRunningHistory(db.Model):
     __tablename__ = "user_running_histories"
 
@@ -72,6 +73,19 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, comment="기본키")
     nickname = db.Column(db.String(45), nullable=False, comment="별명")
+    status = db.Column(db.String(20), comment="탈퇴: out")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")
+
+
+from enum import Enum, auto
+
+
+class LabModel(db.Model):
+    __tablename__ = "labs"
+
+    id = db.Column(db.Integer, primary_key=True, comment="기본키")
+    nickname = db.Column(db.String(45), nullable=False)
     status = db.Column(db.String(20), comment="탈퇴: out")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="생성된 시간")
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment="수정된 시간")

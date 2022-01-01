@@ -42,4 +42,16 @@ class TestConfig(Config):
     DEV_ACCESS_TOKEN = "super_power_token_test"
 
 
-config = {"test": TestConfig, "dev": DevelopmentConfig, "prod": ProductionConfig}
+class LaboratoryConfig(Config):
+    ENV = "laboratory"
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root@localhost:5678/local_dev"
+
+
+config = {
+    "test": TestConfig,
+    "dev": DevelopmentConfig,
+    "prod": ProductionConfig,
+    "lab": LaboratoryConfig,
+}
