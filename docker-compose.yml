@@ -14,3 +14,27 @@ services:
     command: 'python main.py'
     ports:
       - '80:5000'
+  laboratory_redis:
+    image: redis:4.0.11-alpine
+    container_name: my_redis_container
+    ports:
+      - 5699:6379
+
+  laboratory_mysql:
+    image: mysql:5.7
+    restart: always
+    container_name: mysql_5.7_container
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=local_dev
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=dev
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 5678:3306
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    expose:
+      - 5678
